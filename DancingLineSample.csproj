@@ -114,6 +114,7 @@
      <Compile Include="Assets\Template\Scripts\UI\Components\ValueAnimationButton.cs" />
      <Compile Include="Assets\Template\Scripts\UI\Components\ValueImage.cs" />
      <Compile Include="Assets\Template\Scripts\UI\SliderImageGroup.cs" />
+     <Compile Include="Assets\Template\Scripts\UI\UIComponents.cs" />
      <Compile Include="Assets\Template\Scripts\UI\UIManager.cs" />
      <Compile Include="Assets\Template\Scripts\Utility\ButttonAttribute.cs" />
      <Compile Include="Assets\Template\Scripts\Utility\CollectionUtility.cs" />

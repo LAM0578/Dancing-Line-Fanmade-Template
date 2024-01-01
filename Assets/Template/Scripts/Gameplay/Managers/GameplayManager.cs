@@ -50,6 +50,7 @@ namespace DancingLineSample.Gameplay
 		private List<CheckpointTrigger> _currentLevelCheckpoints = new List<CheckpointTrigger>();
 		
 		private ResetObjects _resetObjects;
+		private bool _allowContinue = true;
 			
 		/// <summary>
 		/// 检测并更新游玩状态
@@ -74,7 +75,7 @@ namespace DancingLineSample.Gameplay
 					return;
 				}
 				
-				if (LineStatus == PlayerStatus.Pause)
+				if (LineStatus == PlayerStatus.Pause && _allowContinue)
 				{
 					Continue();
 					return;
@@ -171,6 +172,7 @@ namespace DancingLineSample.Gameplay
 
 			LastCheckpoint = null;
 			UIManager.Instance.ChangeResultUI(false);
+			UIManager.Instance.ChangePauseUI(false);
 			UIManager.Instance.DOFakeFog();
 			
 			await UniTask.Delay(500); // 0.5s
@@ -300,6 +302,7 @@ namespace DancingLineSample.Gameplay
 			MusicSource.Pause();
 			CameraManager.Instance.PauseTriggers();
 			AnimationManager.Instance.Pause();
+			UIManager.Instance.ChangePauseUI(true);
 		}
 
 		/// <summary>
@@ -325,6 +328,7 @@ namespace DancingLineSample.Gameplay
 			MusicSource.time = _fTiming;
 			CameraManager.Instance.ContinueTriggers();
 			AnimationManager.Instance.Continue();
+			UIManager.Instance.ChangePauseUI(false);
 		}
 
 		/// <summary>
@@ -418,6 +422,18 @@ namespace DancingLineSample.Gameplay
 				currentData.Progress = playingData.Progress;
 		}
 
+		/// <summary>
+		/// 设置是否允许继续 (一般在暂停状态下使用)
+		/// </summary>
+		/// <param name="allowContinue"></param>
+		public void ChangeAllowContinue(bool allowContinue)
+		{
+			_allowContinue = allowContinue;
+		}
+
+		/// <summary>
+		/// 淡出音乐
+		/// </summary>
 		public void FadeOutMusic()
 		{
 			MusicSource.DOFade(0, 1f).OnComplete(() =>
