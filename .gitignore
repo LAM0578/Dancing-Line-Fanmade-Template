@@ -1,0 +1,12 @@
+Library/*
+Temp/*
+BackupFiles/*
+obj/*
+ShareImages/*
+ProfilerDatas/*
+.idea/*
+.vs/*
+Logs/*
+Debug/*
+/License.txt
+/user.keystore

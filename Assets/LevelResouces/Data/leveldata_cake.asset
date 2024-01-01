@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1805ca0d81e74071bf38dab10546768e, type: 3}
+  m_Name: leveldata_cake
+  m_EditorClassIdentifier: Assembly-CSharp:DancingLineSample.Gameplay:LevelData
+  ID: level_cake
+  Name: The Cake
+  LineSpeed: 10
+  CollectCubeCount: 10
+  ResetPosition: {x: 0, y: 0.5, z: 0}
+  StartForward: {x: 0, y: 0, z: 0}
+  TurnForward: {x: 0, y: 90, z: 0}
+  Music: {fileID: 8300000, guid: 7371ff35ec339144d831d481d8eca7e7, type: 3}
+  ResetObjects:
+    m_Fog:
+      m_Enable: 1
+      m_EnableFog: 1
+      m_FogColor: {r: 0.9622642, g: 0.9987827, b: 1, a: 1}
+      m_FogMode: 1
+      m_Start: 0
+      m_End: 100
+      m_Density: 0
+    m_Materials:
+    - m_TargetMaterial: {fileID: 2100000, guid: 51a431ee8f6cb9942a89f78453ebf841,
+        type: 2}
+      m_MaterialColor: {r: 1, g: 1, b: 1, a: 1}
+    m_AdvancedMaterials: []
+    m_GameObjects: []
+  GameplayData:
+    Progress: 0.012167644
+    CollectCount: 1
+    CheckpointCount: 1
