@@ -78,6 +78,7 @@ namespace DancingLineSample.Gameplay
 		{
 			_lineRigidbody = GetComponent<Rigidbody>();
 			_lineRigidbody.isKinematic = true;
+			_onGround = UpdateOnGroupStatus();
 		}
 
 		private void Update()
