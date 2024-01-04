@@ -8,6 +8,7 @@ using UnityEngine.Rendering.PostProcessing;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Newtonsoft.Json;
+using DancingLineSample.Attributes;
 
 namespace DancingLineSample.Setting
 {

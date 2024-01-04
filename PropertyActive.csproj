@@ -269,6 +269,9 @@
  <Reference Include="DOTweenEditor">
  <HintPath>D:/UnityProjects/DancingLine_Sample/Assets/DOTween/Editor/DOTweenEditor.dll</HintPath>
  </Reference>
+ <Reference Include="MathNet.Numerics">
+ <HintPath>D:/UnityProjects/DancingLine_Sample/Assets/Plugins/MathNet/MathNet.Numerics.dll</HintPath>
+ </Reference>
  <Reference Include="MsgPack">
  <HintPath>D:/UnityProjects/DancingLine_Sample/Assets/Plugins/MsgPack/MsgPack.dll</HintPath>
  </Reference>

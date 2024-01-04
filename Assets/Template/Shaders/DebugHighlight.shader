@@ -4,8 +4,8 @@ Shader "DancingLine/Debug/Highlight"
 {
 	Properties
 	{
-		_OutlineColor ("Outline Color", Color) = (1, .5, 0, 1)
-		_OutlineScale ("Outline Scale", Range(0, 1)) = .1
+//		_OutlineColor ("Outline Color", Color) = (1, .5, 0, 1)
+//		_OutlineScale ("Outline Scale", Range(0, 1)) = .1
 		_InverseColor ("Inverse Color", Range(0, 1)) = 1
 	}
     SubShader
@@ -16,6 +16,9 @@ Shader "DancingLine/Debug/Highlight"
             "PreviewType"="Plane"
             "CanUseSpriteAtlas"="true"  
         }
+        
+        ZWrite False
+        Cull Off
         
 		ZTest Less
         
@@ -61,36 +64,36 @@ Shader "DancingLine/Debug/Highlight"
 	    }
 
 
-		Pass
-		{
-		Cull Front
-		CGPROGRAM
-			#pragma vertex vert
-			#pragma fragment frag
-			
-			struct input {
-				fixed4 vertex : POSITION;
-				fixed2 texcoord : TEXCOORD0;
-				fixed4 normal : NORMAL;
-			};	
-			struct v2f {
-				fixed4 vertex : POSITION;
-			};
-
-			uniform fixed4 _OutlineColor;
-			uniform fixed _OutlineScale;
-			
-			v2f vert (input v) {
-				v2f o;
-				v.vertex *= 1 + _OutlineScale;
-				o.vertex = UnityObjectToClipPos(v.vertex);
-				return o;
-			}
-
-			fixed4 frag (v2f i) : COLOR {
-				return _OutlineColor;
-			}
-		ENDCG
-		}
+//		Pass
+//		{
+//		Cull Front
+//		CGPROGRAM
+//			#pragma vertex vert
+//			#pragma fragment frag
+//			
+//			struct input {
+//				fixed4 vertex : POSITION;
+//				fixed2 texcoord : TEXCOORD0;
+//				fixed4 normal : NORMAL;
+//			};	
+//			struct v2f {
+//				fixed4 vertex : POSITION;
+//			};
+//
+//			uniform fixed4 _OutlineColor;
+//			uniform fixed _OutlineScale;
+//			
+//			v2f vert (input v) {
+//				v2f o;
+//				v.vertex *= 1 + _OutlineScale;
+//				o.vertex = UnityObjectToClipPos(v.vertex);
+//				return o;
+//			}
+//
+//			fixed4 frag (v2f i) : COLOR {
+//				return _OutlineColor;
+//			}
+//		ENDCG
+//		}
     }
 }

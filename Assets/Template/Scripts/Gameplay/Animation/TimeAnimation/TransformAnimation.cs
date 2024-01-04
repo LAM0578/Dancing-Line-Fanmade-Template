@@ -1,6 +1,5 @@
 using DancingLineSample.Utility;
 using DG.Tweening;
-using UnityEditor.AnimatedValues;
 using UnityEngine;
 
 namespace DancingLineSample.Gameplay.Animation

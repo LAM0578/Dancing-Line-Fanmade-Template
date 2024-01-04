@@ -1,6 +1,7 @@
 # Dancing Line Fanmade Template
 
-__本项目为跳舞的线自制关卡模板，还在更新中，非最终版本，请选择性使用！__  
+__本项目为跳舞的线自制关卡模板，还在更新中，非最终版本，请选择性使用！__
+
 __请注意，使用本模板需要有一定的 C# 基础，不提供 C# 基础教程！__
 
 如果您没有任何 C# 基础，您可以学习一下 C# 或者也可以在[这里](https://chinadlrs.com/developer/)选择其他模板使用
@@ -36,3 +37,12 @@ __请注意，使用本模板需要有一定的 C# 基础，不提供 C# 基础�
 ### 2024/1/2 - 2024010200 更新
 - 现在会在 MainLine 加载实例时 (Awake) 自动设置 _onGround，避免会在初次开始游玩时有粒子产生 
 - 增加空场景 (此空场景为 SampleScene 修改，并非重新制作) 便于制作
+
+### 2024/1/4 - 2024010400 更新
+> 不确定修改为抛物线是否会对性能产生较大的影响，可以选择改回 CubicIn + CubicOut 的形式
+- 修改 ButtonAttribute 的命名空间到 DancingLineSample.Attributes 下
+- 修改皇冠效果动画为抛物线 (CheckpointObject.cs)
+- 新增皇冠效果动画抛物线预览
+- 新增相机跟随数据预览
+- 修复打包时报错的问题 (为 UnityEditor 相关引起的问题)
+- 增加 AudioOffset 按钮组 (位于 Setting UI)，为下次更新准备

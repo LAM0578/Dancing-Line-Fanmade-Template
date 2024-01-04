@@ -33,7 +33,7 @@ namespace DancingLineSample.Editing
 	
 #if UNITY_EDITOR
 		
-		private void OnUpdate()
+		private void OnDrawGizmosUpdate()
 		{
 			
 			if (_style == null) updateStyle();
@@ -86,7 +86,7 @@ namespace DancingLineSample.Editing
 		private void OnGUI()
 		{
 			if (!m_Enable) return;
-			OnUpdate();
+			OnDrawGizmosUpdate();
 			var gameplayManager = GameplayManager.Instance;
 			var curStatus = gameplayManager.LineStatus;
 			var curTiming = gameplayManager.CurrentTiming;

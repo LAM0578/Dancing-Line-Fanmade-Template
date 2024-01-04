@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using DancingLineSample.Attributes;
 using DancingLineSample.Utility;
 using DG.Tweening;
 using UnityEditor;

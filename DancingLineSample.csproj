@@ -58,11 +58,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Template\Scripts\Attributes\ButttonAttribute.cs" />
      <Compile Include="Assets\Template\Scripts\Debug\FPSDisplay.cs" />
      <Compile Include="Assets\Template\Scripts\Editing\InfoDisplay.cs" />
      <Compile Include="Assets\Template\Scripts\Editing\RoadDisplay.cs" />
      <Compile Include="Assets\Template\Scripts\Editing\Utility\ColorUtility.cs" />
      <Compile Include="Assets\Template\Scripts\Editing\Utility\ScreenUtility.cs" />
+     <Compile Include="Assets\Template\Scripts\EditorUtility\GizmosExtend.cs" />
      <Compile Include="Assets\Template\Scripts\Gameplay\Animation\AnimationBase\AnimationBase.cs" />
      <Compile Include="Assets\Template\Scripts\Gameplay\Animation\AnimationBase\AnimationComponentBase.cs" />
      <Compile Include="Assets\Template\Scripts\Gameplay\Animation\AnimationBase\TimeAnimationBase.cs" />
@@ -116,11 +118,11 @@
      <Compile Include="Assets\Template\Scripts\UI\SliderImageGroup.cs" />
      <Compile Include="Assets\Template\Scripts\UI\UIComponents.cs" />
      <Compile Include="Assets\Template\Scripts\UI\UIManager.cs" />
-     <Compile Include="Assets\Template\Scripts\Utility\ButttonAttribute.cs" />
      <Compile Include="Assets\Template\Scripts\Utility\CollectionUtility.cs" />
      <Compile Include="Assets\Template\Scripts\Utility\DOTweenUtility.cs" />
      <Compile Include="Assets\Template\Scripts\Utility\FileUtility.cs" />
      <Compile Include="Assets\Template\Scripts\Utility\GameObjectResetStatus.cs" />
+     <Compile Include="Assets\Template\Scripts\Utility\MathUtility.cs" />
      <Compile Include="Assets\Template\Scripts\Utility\MsgPackHelper.cs" />
      <Compile Include="Assets\Template\Scripts\Utility\ObjectStatus.cs" />
      <Compile Include="Assets\Template\Scripts\Utility\PropertyActiveUtility.cs" />
@@ -337,6 +339,9 @@
  </Reference>
  <Reference Include="DOTweenEditor">
  <HintPath>D:/UnityProjects/DancingLine_Sample/Assets/DOTween/Editor/DOTweenEditor.dll</HintPath>
+ </Reference>
+ <Reference Include="MathNet.Numerics">
+ <HintPath>D:/UnityProjects/DancingLine_Sample/Assets/Plugins/MathNet/MathNet.Numerics.dll</HintPath>
  </Reference>
  <Reference Include="MsgPack">
  <HintPath>D:/UnityProjects/DancingLine_Sample/Assets/Plugins/MsgPack/MsgPack.dll</HintPath>

@@ -8,6 +8,7 @@ using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 using MsgPack;
+using DancingLineSample.Attributes;
 
 namespace DancingLineSample.Gameplay
 {

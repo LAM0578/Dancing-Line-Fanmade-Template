@@ -4,7 +4,7 @@ using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
-namespace DancingLineSample.Utility
+namespace DancingLineSample.Attributes
 {
 	[AttributeUsage(AttributeTargets.Method)]
 	public class ButtonAttribute : PropertyAttribute
@@ -34,7 +34,7 @@ namespace DancingLineSample.Utility
 
 			foreach (var method in methods)
 			{
-				var ba = (ButtonAttribute)Attribute.GetCustomAttribute(method, typeof(ButtonAttribute));
+				var ba = (ButtonAttribute)System.Attribute.GetCustomAttribute(method, typeof(ButtonAttribute));
 				if (ba != null && GUILayout.Button(ba.Name))
 				{
 					if (!ba.RunInEditorMode && !Application.isPlaying) return;

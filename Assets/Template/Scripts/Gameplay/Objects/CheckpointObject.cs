@@ -1,6 +1,9 @@
 using System;
+using DancingLineSample.Attributes;
+using DancingLineSample.EditorUtility;
 using DancingLineSample.Utility;
 using DG.Tweening;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -9,6 +12,8 @@ namespace DancingLineSample.Gameplay.Objects
 	public class CheckpointObject : MonoBehaviour
 	{
 #pragma warning disable
+		
+		[Header("Checkpoint Object Settings")]
 		
 		[Tooltip("检查点对象 (粒子效果起始位置, 可为自身)")]
 		[SerializeField] 
@@ -28,6 +33,11 @@ namespace DancingLineSample.Gameplay.Objects
 		
 		[Tooltip("皇冠标识对象")]
 		[SerializeField] private GameObject m_CrownIconObject;
+
+		[Header("Debug")] 
+		
+		[SerializeField] private bool m_EnableDebug;
+		[SerializeField] private Color m_LineColor;
 		
 #pragma warning restore
 		
@@ -38,6 +48,30 @@ namespace DancingLineSample.Gameplay.Objects
 		private bool _hasCollect;
 		private bool _hasLost;
 		private Material _crownMaterial;
+		private EaseFunction _easeFunction;
+
+#if UNITY_EDITOR
+		
+		private Vector3 _originalPos;
+		private Vector3 _targetPos;
+		private Vector3[] _points;
+		
+#endif
+
+		private void Awake()
+		{
+			// if (!m_CheckpointObject || !m_ParticleTargetTransform) return;
+			//
+			// var originalPos = m_CheckpointObject.transform.position;
+			// var targetPos = m_ParticleTargetTransform.position;
+			//
+			// _easeFunction = DOTweenUtility.CalculateParabolaFunction(
+			// 	originalPos,
+			// 	targetPos,
+			// 	_effectHeight
+			// );
+			ResetEffect();
+		}
 
 		private void SetCrownMaterialInstance()
 		{
@@ -50,30 +84,29 @@ namespace DancingLineSample.Gameplay.Objects
 
 		private void DoParabola(Vector3 originalPos, Vector3 targetPos)
 		{
-			var middlePos = Vector3.Lerp(originalPos, targetPos, .5f);
+			_easeFunction = DOTweenUtility.CalculateParabolaFunction(
+				originalPos,
+				targetPos,
+				_effectHeight
+			);
+			
 			var sequence = DOTween.Sequence();
 			var trans = m_ParticleTransform;
-			float halfDuration = m_ParticleEffectDuration / 2f;
-			float maxHeight = Mathf.Max(originalPos.y, targetPos.y);
-			middlePos.y = maxHeight + _effectHeight;
-			// part 0
-			sequence.Join(trans.DOMoveX(middlePos.x, halfDuration).SetEase(Ease.Linear));
-			sequence.Join(trans.DOMoveY(middlePos.y, halfDuration).SetEase(Ease.OutCubic));
-			sequence.Join(trans.DOMoveZ(middlePos.z, halfDuration).SetEase(Ease.Linear));
-			// wait
-			sequence.AppendInterval(halfDuration);
-			// part 1
-			sequence.Join(trans.DOMoveX(targetPos.x, halfDuration).SetEase(Ease.Linear));
-			sequence.Join(trans.DOMoveY(targetPos.y, halfDuration).SetEase(Ease.InCubic));
-			sequence.Join(trans.DOMoveZ(targetPos.z, halfDuration).SetEase(Ease.Linear));
-			// wait
-			sequence.AppendInterval(halfDuration);
-			// crown
-			sequence.Join(
-				_crownMaterial
-					.DOFloat(1, _m_Progress, .2f)
-					.SetEase(Ease.OutCubic));
-			// play
+			float duration = m_ParticleEffectDuration;
+			
+			sequence.Join(trans.DOMoveX(targetPos.x, duration).SetEase(Ease.Linear));
+			sequence.Join(DOTweenUtility.DOFunction(
+				_easeFunction,
+				y =>
+				{
+					var p = trans.position;
+					p.y = y;
+					trans.position = p;
+				},
+				duration
+			).SetEase(Ease.Linear));
+			sequence.Join(trans.DOMoveZ(targetPos.z, duration).SetEase(Ease.Linear));
+			
 			sequence.Play();
 		}
 
@@ -97,6 +130,7 @@ namespace DancingLineSample.Gameplay.Objects
 			var originalPos = m_CheckpointObject.transform.position;
 			var targetPos = m_ParticleTargetTransform.position;
 			SetCrownMaterialInstance();
+			// print(string.Join(", ", new Vector3[]{ originalPos, targetPos}));
 			DoParabola(originalPos, targetPos);
 			_hasCollect = true;
 		}
@@ -141,6 +175,44 @@ namespace DancingLineSample.Gameplay.Objects
 			m_CheckpointObject.SetActive(true);
 			if (_crownMaterial) _crownMaterial.SetFloat(_m_Progress, 0);
 			DoCollectEffect();
+		}
+
+		private void OnDrawGizmosUpdate()
+		{
+			if (!m_CheckpointObject || !m_ParticleTargetTransform) return;
+			
+			var originalPos = m_CheckpointObject.transform.position;
+			var targetPos = m_ParticleTargetTransform.position;
+			
+			if (_originalPos != originalPos)
+			{
+				_originalPos = originalPos;
+				_points = MathUtility
+					.CalculateParabolaPoints(
+						originalPos, targetPos, _effectHeight)
+					.ToArray();
+				return;
+			}
+
+			if (_targetPos != targetPos)
+			{
+				_targetPos = targetPos;
+				_points = MathUtility
+					.CalculateParabolaPoints(
+						originalPos, targetPos, _effectHeight)
+					.ToArray();
+				return;
+			}
+		}
+
+		private void OnDrawGizmos()
+		{
+			if (!m_EnableDebug) return;
+			
+			OnDrawGizmosUpdate();
+
+			Handles.color = m_LineColor;
+			Handles.DrawAAPolyLine(4f, _points);
 		}
 #endif
 	}

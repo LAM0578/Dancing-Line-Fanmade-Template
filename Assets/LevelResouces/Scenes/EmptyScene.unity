@@ -593,8 +593,8 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.3
-  far clip plane: 1000
+  near clip plane: 0
+  far clip plane: 2
   field of view: 60
   orthographic: 1
   orthographic size: 5
@@ -5649,6 +5649,13 @@ MonoBehaviour:
     ResetRotation: {x: 25, y: 45, z: 0}
     ResetFieldOfView: 80
   Smooth: 3
+  m_EnableDebug: 1
+  m_LineColor: {r: 1, g: 1, b: 0, a: 1}
+  m_OriginLineColor: {r: 1, g: 0.5, b: 0, a: 1}
+  m_TextColor: {r: 1, g: 1, b: 1, a: 1}
+  m_TextBackgroundColor: {r: 0, g: 0, b: 0, a: 0.8}
+  m_FollowObjectColor: {r: 1, g: 0, b: 1, a: 1}
+  m_PointRadius: 0.75
   TriggerOffset: {x: 0, y: 0, z: 0}
 --- !u!1 &1387294468
 GameObject:

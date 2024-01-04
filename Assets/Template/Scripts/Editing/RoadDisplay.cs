@@ -109,7 +109,7 @@ namespace DancingLineSample.Editing
 			}
 		}
 
-		private void UpdateValues()
+		private void OnDrawGizmosUpdate()
 		{
 			if (m_ShowText)
 			{
@@ -121,13 +121,13 @@ namespace DancingLineSample.Editing
 					}
 					_textBackgroundColor = m_TextBackgroundColor;
 					_textBackground = _textBackgroundColor.ToTexture2D();
-					createNewGUIStyle();
+					updateStyle();
 				}
 
 				if (_textColor != m_TextColor)
 				{
 					_textColor = m_TextColor;
-					createNewGUIStyle();
+					updateStyle();
 				}
 			}
 
@@ -173,7 +173,7 @@ namespace DancingLineSample.Editing
 			
 			return;
 
-			void createNewGUIStyle()
+			void updateStyle()
 			{
 				_style = new GUIStyle
 				{
@@ -195,7 +195,7 @@ namespace DancingLineSample.Editing
 			
 			if (Lines.Count == 0) return;
 			
-			UpdateValues();
+			OnDrawGizmosUpdate();
 			
 			Gizmos.color = m_LineColor;
 

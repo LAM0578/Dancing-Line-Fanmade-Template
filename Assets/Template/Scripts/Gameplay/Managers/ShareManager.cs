@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.Rendering.PostProcessing;
 using UnityEngine.UI;
 using Path = System.IO.Path;
+using DancingLineSample.Attributes;
 
 namespace DancingLineSample.Gameplay
 {

@@ -1,3 +1,4 @@
+using DancingLineSample.Attributes;
 using DancingLineSample.Gameplay.Objects;
 using DancingLineSample.Utility;
 using DG.Tweening;
