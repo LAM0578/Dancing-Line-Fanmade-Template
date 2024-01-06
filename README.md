@@ -40,13 +40,28 @@ __请注意，使用本模板需要有一定的 C# 基础，不提供 C# 基础�
 
 ### 2024/1/4 - 2024010400 更新
 > 不确定修改为抛物线是否会对性能产生较大的影响，可以选择改回 CubicOut + CubicIn 的形式
-- 修改 ButtonAttribute 的命名空间到 DancingLineSample.Attributes 下
+- 修改 `ButtonAttribute` 的命名空间到 `DancingLineSample.Attributes` 下
 - 修改皇冠效果动画为抛物线 (CheckpointObject.cs)
 - 新增皇冠效果动画抛物线预览
 - 新增相机跟随数据预览
 - 修复打包时报错的问题 (为 UnityEditor 相关引起的问题)
-- 增加 AudioOffset 按钮组 (位于 Setting UI)，为下次更新准备
+- 增加 AudioOffset 按钮组 (`UICanvas/Setting/View/Top/AudioOffset`)，为下次更新准备
 
 ### 2024/1/4 - 2024010401 更新
 > 与 `2024010400 更新` 相同
 - 移除不该存在的 packages.config
+
+### 2024/1/6 - 2024010600 更新
+> 因音音频延迟调整系统的加入，修改了 `GameplayManager.Play(float)` 方法，原方法内容移动到 `GameplayManager.PlayTask(float)` 内并修改
+
+> 未来会加入让玩家自己测延迟的功能 (延迟向导)
+
+> ### 关于音频延迟调整系统说明  
+> 当你感觉 LATE 较多时 (线过晚) 可以增加延迟  
+> 当你感觉 EARLY 较多 (线过早) 时可以减少延迟
+
+- 移除了 `MathUtility.FitParabola(float, float, float)` 方法对于 `MathNet` 的依赖，性能或许会好些
+- 新增音频延迟调整系统 (和 `GameplayManager.AudioOffset` 不同，该值是玩家可以更改的)
+- 修复皇冠动画效果不正确的问题
+- 微调了默认皇冠动画效果的高度，如需调整可自行调整
+- 空场景将不再更新，待模板完善后更新，主要还是~~懒得更~~

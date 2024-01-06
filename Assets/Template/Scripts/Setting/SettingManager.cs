@@ -18,6 +18,8 @@ namespace DancingLineSample.Setting
 		public int QualityLevel;
 		public int FPSLimitIndex;
 		public bool EnablePostProcessing;
+		public int AudioOffset;
+		public bool FullScreen;
 	}
 	public class SettingManager : Singleton<SettingManager>
 	{
@@ -91,6 +93,7 @@ namespace DancingLineSample.Setting
 #if UNITY_EDITOR
 			byte[] bdata = MsgPackHelper.Serialize(m_DefaultSettings);
 #else
+			_settings.AudioOffset = AudioOffsetManager.Instance.AudioOffset;
 			byte[] bdata = MsgPackHelper.Serialize(_settings);
 			print(JsonConvert.SerializeObject(_settings));
 #endif

@@ -12,6 +12,7 @@ using UnityEngine.Rendering.PostProcessing;
 using UnityEngine.UI;
 using SuperBlur;
 using DancingLineSample.Attributes;
+using DancingLineSample.Objects;
 
 namespace DancingLineSample.UI
 {

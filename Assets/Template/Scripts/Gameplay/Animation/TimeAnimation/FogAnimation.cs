@@ -1,5 +1,6 @@
 using DancingLineSample.Attributes;
 using DancingLineSample.Gameplay.Objects;
+using DancingLineSample.Objects;
 using DancingLineSample.Utility;
 using DG.Tweening;
 using UnityEditor;

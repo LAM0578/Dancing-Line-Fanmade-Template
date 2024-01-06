@@ -1,6 +1,7 @@
 using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using DancingLineSample.Objects;
 using DancingLineSample.Setting;
 using DancingLineSample.Utility;
 using DG.Tweening;

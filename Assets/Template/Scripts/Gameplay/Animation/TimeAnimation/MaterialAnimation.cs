@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using DancingLineSample.Objects;
 using DancingLineSample.Utility;
 using DG.Tweening;
 using UnityEditor;

@@ -42,9 +42,10 @@ namespace DancingLineSample.Gameplay
 
 		private static bool _isClick => Input.GetKeyDown(TurnKeybordKey) || Input.GetKeyDown(TurnMouseKey);
 		
-		private static CancellationTokenSource m_Restart_cts = new CancellationTokenSource();
-		private static CancellationTokenSource m_Prepare_cts = new CancellationTokenSource();
-		private static CancellationTokenSource m_Checkpoint_cts = new CancellationTokenSource();
+		private static CancellationTokenSource _Play_cts = new CancellationTokenSource();
+		private static CancellationTokenSource _Restart_cts = new CancellationTokenSource();
+		private static CancellationTokenSource _Prepare_cts = new CancellationTokenSource();
+		private static CancellationTokenSource _Checkpoint_cts = new CancellationTokenSource();
 
 		private List<CollectCubeTrigger> _currentLevelCollectCubes = new List<CollectCubeTrigger>();
 		private List<CheckpointTrigger> _currentLevelCheckpoints = new List<CheckpointTrigger>();
@@ -104,7 +105,7 @@ namespace DancingLineSample.Gameplay
 		}
 		
 		public float CurrentProgress => Mathf.Clamp01(_fTiming / MusicSource.clip.length);
-		public int CurrentTiming => Timing - AudioOffset;
+		public int CurrentTiming => Timing - AudioOffset - AudioOffsetManager.Instance.AudioOffset;
 		
 		private LevelGameplayData CurrentGameplayData { get; set; }
 		public LevelGameplayData PlayingGameplayData = new LevelGameplayData();
@@ -162,10 +163,32 @@ namespace DancingLineSample.Gameplay
 			MusicSource.volume = 1;
 		}
 
+		private async UniTaskVoid PlayTask(float fTiming)
+		{
+			bool isCanceled = await UniTask
+				.Delay(0, cancellationToken: _Play_cts.Token)
+				.SuppressCancellationThrow();
+			
+			if (isCanceled) return;
+
+			var offset = AudioOffsetManager.Instance.AudioOffset;
+			
+			OnPlay();
+			_fTiming = fTiming;
+			IsPlaying = true;
+			MusicSource.PlayDelayed((AudioOffset + offset) / 1000f);
+			if (offset < 0)
+			{
+				await UniTask.Delay(-offset);
+			}
+			LineStatus = PlayerStatus.Playing;
+			Line.Play();
+		}
+
 		private async UniTaskVoid PrepareTask()
 		{
 			bool isCanceled = await UniTask
-				.Delay(0, cancellationToken: m_Prepare_cts.Token)
+				.Delay(0, cancellationToken: _Prepare_cts.Token)
 				.SuppressCancellationThrow();
 			
 			if (isCanceled) return;
@@ -186,7 +209,7 @@ namespace DancingLineSample.Gameplay
 		private async UniTaskVoid RestartTask()
 		{
 			bool isCanceled = await UniTask
-				.Delay(0, cancellationToken: m_Restart_cts.Token)
+				.Delay(0, cancellationToken: _Restart_cts.Token)
 				.SuppressCancellationThrow();
 			
 			if (isCanceled) return;
@@ -209,7 +232,7 @@ namespace DancingLineSample.Gameplay
 		private async UniTaskVoid CheckpointTask(CheckpointTrigger checkpoint)
 		{
 			bool isCanceled = await UniTask
-				.Delay(0, cancellationToken: m_Checkpoint_cts.Token)
+				.Delay(0, cancellationToken: _Checkpoint_cts.Token)
 				.SuppressCancellationThrow();
 			
 			if (isCanceled) return;
@@ -262,9 +285,9 @@ namespace DancingLineSample.Gameplay
 		/// </summary>
 		public void Prepare()
 		{
-			m_Prepare_cts.Cancel();
-			m_Prepare_cts.Dispose();
-			m_Prepare_cts = new CancellationTokenSource();
+			_Prepare_cts.Cancel();
+			_Prepare_cts.Dispose();
+			_Prepare_cts = new CancellationTokenSource();
 			PrepareTask().Forget();
 		}
 
@@ -283,12 +306,10 @@ namespace DancingLineSample.Gameplay
 		/// <param name="fTiming">内置时间</param>
 		public void Play(float fTiming = 0)
 		{
-			OnPlay();
-			_fTiming = fTiming;
-			IsPlaying = true;
-			LineStatus = PlayerStatus.Playing;
-			Line.Play();
-			MusicSource.PlayDelayed(AudioOffset / 1000f);
+			_Play_cts.Cancel();
+			_Play_cts.Dispose();
+			_Play_cts = new CancellationTokenSource();
+			PlayTask(fTiming).Forget();
 		}
 
 		/// <summary>
@@ -310,9 +331,9 @@ namespace DancingLineSample.Gameplay
 		/// </summary>
 		public void Restart()
 		{
-			m_Restart_cts.Cancel();
-			m_Restart_cts.Dispose();
-			m_Restart_cts = new CancellationTokenSource();
+			_Restart_cts.Cancel();
+			_Restart_cts.Dispose();
+			_Restart_cts = new CancellationTokenSource();
 			RestartTask().Forget();
 		}
 
@@ -337,9 +358,9 @@ namespace DancingLineSample.Gameplay
 		/// <param name="checkpoint">指定检查点</param>
 		public void ContinueByCheckpoint(CheckpointTrigger checkpoint)
 		{
-			m_Checkpoint_cts.Cancel();
-			m_Checkpoint_cts.Dispose();
-			m_Checkpoint_cts = new CancellationTokenSource();
+			_Checkpoint_cts.Cancel();
+			_Checkpoint_cts.Dispose();
+			_Checkpoint_cts = new CancellationTokenSource();
 			CheckpointTask(checkpoint).Forget();
 		}
 

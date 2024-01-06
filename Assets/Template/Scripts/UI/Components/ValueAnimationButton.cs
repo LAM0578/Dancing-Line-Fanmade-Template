@@ -1,4 +1,5 @@
 using System;
+using DancingLineSample.Objects;
 using DancingLineSample.Utility;
 using DG.Tweening;
 using UnityEngine;

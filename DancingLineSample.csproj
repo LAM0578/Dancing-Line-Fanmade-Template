@@ -92,6 +92,7 @@
      <Compile Include="Assets\Template\Scripts\Gameplay\Data\LevelData.cs" />
      <Compile Include="Assets\Template\Scripts\Gameplay\MainLine.cs" />
      <Compile Include="Assets\Template\Scripts\Gameplay\Managers\AnimationManager.cs" />
+     <Compile Include="Assets\Template\Scripts\Gameplay\Managers\AudioOffsetManager.cs" />
      <Compile Include="Assets\Template\Scripts\Gameplay\Managers\AutoPlayManager.cs" />
      <Compile Include="Assets\Template\Scripts\Gameplay\Managers\CameraManager.cs" />
      <Compile Include="Assets\Template\Scripts\Gameplay\Managers\DataManager.cs" />
@@ -111,8 +112,11 @@
      <Compile Include="Assets\Template\Scripts\Gameplay\Trigger\Text\TMPTextAnimationTrigger.cs" />
      <Compile Include="Assets\Template\Scripts\Gameplay\Trigger\Text\UGUITextAnimationTrigger.cs" />
      <Compile Include="Assets\Template\Scripts\Gameplay\Trigger\TriggerItem.cs" />
+     <Compile Include="Assets\Template\Scripts\Objects\ObjectStatus.cs" />
      <Compile Include="Assets\Template\Scripts\Setting\SettingManager.cs" />
+     <Compile Include="Assets\Template\Scripts\UI\Components\HoldButton.cs" />
      <Compile Include="Assets\Template\Scripts\UI\Components\SwitchButtonGroup.cs" />
+     <Compile Include="Assets\Template\Scripts\UI\Components\SwitchHoldButtonGroup.cs" />
      <Compile Include="Assets\Template\Scripts\UI\Components\ValueAnimationButton.cs" />
      <Compile Include="Assets\Template\Scripts\UI\Components\ValueImage.cs" />
      <Compile Include="Assets\Template\Scripts\UI\SliderImageGroup.cs" />
@@ -124,7 +128,6 @@
      <Compile Include="Assets\Template\Scripts\Utility\GameObjectResetStatus.cs" />
      <Compile Include="Assets\Template\Scripts\Utility\MathUtility.cs" />
      <Compile Include="Assets\Template\Scripts\Utility\MsgPackHelper.cs" />
-     <Compile Include="Assets\Template\Scripts\Utility\ObjectStatus.cs" />
      <Compile Include="Assets\Template\Scripts\Utility\PropertyActiveUtility.cs" />
      <Compile Include="Assets\Template\Scripts\Utility\RenderTextureUtility.cs" />
      <Compile Include="Assets\Template\Scripts\Utility\Singleton.cs" />

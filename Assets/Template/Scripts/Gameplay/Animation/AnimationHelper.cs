@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using DancingLineSample.Objects;
 using DancingLineSample.Utility;
 using DG.Tweening;
 using DG.Tweening.Core.Easing;

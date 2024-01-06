@@ -41,7 +41,7 @@ namespace DancingLineSample.Gameplay.Objects
 		
 #pragma warning restore
 		
-		private const float _effectHeight = 5f;
+		private const float _effectHeight = 4f;
 		
 		private static readonly int _m_Progress = Shader.PropertyToID("_Progress");
 
@@ -58,20 +58,10 @@ namespace DancingLineSample.Gameplay.Objects
 		
 #endif
 
-		private void Awake()
-		{
-			// if (!m_CheckpointObject || !m_ParticleTargetTransform) return;
-			//
-			// var originalPos = m_CheckpointObject.transform.position;
-			// var targetPos = m_ParticleTargetTransform.position;
-			//
-			// _easeFunction = DOTweenUtility.CalculateParabolaFunction(
-			// 	originalPos,
-			// 	targetPos,
-			// 	_effectHeight
-			// );
-			ResetEffect();
-		}
+		// private void Awake()
+		// {
+		// 	SetCrownMaterialInstance();
+		// }
 
 		private void SetCrownMaterialInstance()
 		{
@@ -106,6 +96,12 @@ namespace DancingLineSample.Gameplay.Objects
 				duration
 			).SetEase(Ease.Linear));
 			sequence.Join(trans.DOMoveZ(targetPos.z, duration).SetEase(Ease.Linear));
+			if (_crownMaterial)
+			{
+				sequence.Append(_crownMaterial
+					.DOFloat(1, _m_Progress, .2f)
+					.SetEase(Ease.OutCubic));
+			}
 			
 			sequence.Play();
 		}
@@ -187,22 +183,22 @@ namespace DancingLineSample.Gameplay.Objects
 			if (_originalPos != originalPos)
 			{
 				_originalPos = originalPos;
-				_points = MathUtility
-					.CalculateParabolaPoints(
-						originalPos, targetPos, _effectHeight)
-					.ToArray();
-				return;
+				goto updatePoints;
 			}
 
 			if (_targetPos != targetPos)
 			{
 				_targetPos = targetPos;
-				_points = MathUtility
-					.CalculateParabolaPoints(
-						originalPos, targetPos, _effectHeight)
-					.ToArray();
-				return;
+				goto updatePoints;
 			}
+			
+			return;
+			
+			updatePoints:
+			_points = MathUtility
+				.CalculateParabolaPoints(
+					originalPos, targetPos, _effectHeight)
+				.ToArray();
 		}
 
 		private void OnDrawGizmos()

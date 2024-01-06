@@ -6,6 +6,47 @@ namespace DancingLineSample.Utility
 {
 	public static class MathUtility
 	{
+		private static double[] Solve(double[,] A, double[] y)
+		{
+			int n = y.Length;
+
+			for (int i = 0; i < n; i++)
+			{
+				int max = i;
+				for (int j = i + 1; j < n; j++)
+					if (Mathf.Abs((float)A[j, i]) > Mathf.Abs((float)A[max, i]))
+						max = j;
+
+				double[] temp = new double[n + 1];
+				for (int k = 0; k < n; k++)
+					temp[k] = A[max, k];
+				temp[n] = y[max];
+				for (int k = 0; k < n; k++)
+					A[max, k] = A[i, k];
+				y[max] = y[i];
+				for (int k = 0; k < n; k++)
+					A[i, k] = temp[k];
+				y[i] = temp[n];
+
+				for (int j = i + 1; j < n; j++)
+				{
+					double f = A[j, i] / A[i, i];
+					for (int k = i + 1; k < n; k++)
+						A[j, k] -= A[i, k] * f;
+					y[j] -= y[i] * f;
+				}
+			}
+
+			double[] x = new double[n];
+			for (int i = n - 1; i >= 0; i--)
+			{
+				x[i] = y[i] / A[i, i];
+				for (int j = i - 1; j >= 0; j--)
+					y[j] -= A[j, i] * x[i];
+			}
+
+			return x;
+		}
 		
 		/// <summary>
 		/// 根据三个点计算抛物线方程系数
@@ -17,24 +58,18 @@ namespace DancingLineSample.Utility
 		public static double[] FitParabola(Vector3 pointA, Vector3 pointB, Vector3 pointC)
 		{
 			// 构建矩阵
-			var A = Matrix<double>.Build.Dense(3, 3);
-			var y = Vector<double>.Build.Dense(3);
+			double[,] A = new double[3, 3] {
+				{ pointA.x * pointA.x, pointA.x, 1 },
+				{ pointB.x * pointB.x, pointB.x, 1 },
+				{ pointC.x * pointC.x, pointC.x, 1 }
+			};
 
-			var points = new Vector3[] { pointA, pointB, pointC };
-
-			for (int i = 0; i < 3; i++)
-			{
-				double x = points[i].x;
-				A[i, 0] = x * x;
-				A[i, 1] = x;
-				A[i, 2] = 1;
-				y[i] = points[i].y;
-			}
+			double[] y = new double[3] { pointA.y, pointB.y, pointC.y };
 
 			// 求解线性方程组
-			var coefficients = A.Solve(y);
+			double[] coefficients = Solve(A, y);
 
-			return new double[] { coefficients[0], coefficients[1], coefficients[2] };
+			return coefficients;
 		}
 		
 		/// <summary>

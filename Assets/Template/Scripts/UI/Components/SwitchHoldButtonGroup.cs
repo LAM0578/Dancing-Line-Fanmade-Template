@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace DancingLineSample.UI.Components
 {
-	public class SwitchButtonGroup : MonoBehaviour
+	public class SwitchHoldButtonGroup : MonoBehaviour
 	{
 		[Serializable]
 		public class ValueChangedEvent : UnityEvent<int> { }
@@ -14,8 +14,8 @@ namespace DancingLineSample.UI.Components
 
 		[SerializeField] private bool m_InitOnAwake;
 		[Space]
-		[SerializeField] private Button m_IncreaseButton;
-		[SerializeField] private Button m_DecreaseButton;
+		[SerializeField] private HoldButton m_IncreaseButton;
+		[SerializeField] private HoldButton m_DecreaseButton;
 		[Space]
 		[SerializeField] private int m_MinLimit;
 		[SerializeField] private int m_MaxLimit;
@@ -88,8 +88,8 @@ namespace DancingLineSample.UI.Components
 		public void Init()
 		{
 			if (_inited) return;
-			m_IncreaseButton.onClick.AddListener(Increase);
-			m_DecreaseButton.onClick.AddListener(Decrease);
+			m_IncreaseButton.OnPressing.AddListener(Increase);
+			m_DecreaseButton.OnPressing.AddListener(Decrease);
 			_inited = true;
 		}
 
@@ -98,8 +98,8 @@ namespace DancingLineSample.UI.Components
 		/// </summary>
 		private void UpdateButtonStatus()
 		{
-			m_IncreaseButton.interactable = _currentValue < m_MaxLimit;
-			m_DecreaseButton.interactable = _currentValue > m_MinLimit;
+			m_IncreaseButton.Disable = !(_currentValue < m_MaxLimit);
+			m_DecreaseButton.Disable = !(_currentValue > m_MinLimit);
 		}
 
 		/// <summary>
