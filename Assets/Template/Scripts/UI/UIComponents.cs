@@ -476,6 +476,10 @@ namespace DancingLineSample.UI
 			_tween = squence.Play();
 		}
 
+		/// <summary>
+		/// 设置延迟向导 UI 的可见状态
+		/// </summary>
+		/// <param name="visible">可见状态</param>
 		public override void SetStatus(bool visible)
 		{
 			m_CanvasGroup.alpha = visible ? 1 : 0;
