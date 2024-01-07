@@ -7,12 +7,12 @@ using UnityEngine;
 namespace DancingLineSample.Attributes
 {
 	[AttributeUsage(AttributeTargets.Method)]
-	public class ButtonAttribute : PropertyAttribute
+	public class MethodButtonAttribute : PropertyAttribute
 	{
 		public string Name { get; }
 		public bool RunInEditorMode { get; }
 
-		public ButtonAttribute(string name, bool runInEditorMode = false)
+		public MethodButtonAttribute(string name, bool runInEditorMode = false)
 		{
 			Name = name;
 			RunInEditorMode = runInEditorMode;
@@ -34,7 +34,7 @@ namespace DancingLineSample.Attributes
 
 			foreach (var method in methods)
 			{
-				var ba = (ButtonAttribute)System.Attribute.GetCustomAttribute(method, typeof(ButtonAttribute));
+				var ba = (MethodButtonAttribute)System.Attribute.GetCustomAttribute(method, typeof(MethodButtonAttribute));
 				if (ba != null && GUILayout.Button(ba.Name))
 				{
 					if (!ba.RunInEditorMode && !Application.isPlaying) return;

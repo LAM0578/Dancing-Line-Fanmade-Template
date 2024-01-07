@@ -37,8 +37,8 @@ namespace DancingLineSample.Gameplay
 		public PlayerStatus LineStatus { get; internal set; }
 		public bool AllowTurn { get; set; } = true;
 		
-		private const KeyCode TurnKeybordKey = KeyCode.Space;
-		private const KeyCode TurnMouseKey = KeyCode.Mouse0;
+		internal const KeyCode TurnKeybordKey = KeyCode.Space;
+		internal const KeyCode TurnMouseKey = KeyCode.Mouse0;
 
 		private static bool _isClick => Input.GetKeyDown(TurnKeybordKey) || Input.GetKeyDown(TurnMouseKey);
 		
@@ -52,6 +52,7 @@ namespace DancingLineSample.Gameplay
 		
 		private ResetObjects _resetObjects;
 		private bool _allowContinue = true;
+		private bool _isStarted;
 			
 		/// <summary>
 		/// 检测并更新游玩状态
@@ -62,24 +63,27 @@ namespace DancingLineSample.Gameplay
 
 			if (_isClick && AllowTurn)
 			{
-				if (LineStatus == PlayerStatus.Ready)
+				if (LineStatus == PlayerStatus.Ready && !_isStarted)
 				{
 					Play();
 					return;
 				}
-				
-				if (LineStatus == PlayerStatus.ReadyAtCheckpoint)
+
+				if (_allowContinue)
 				{
-					Play(_fTiming);
-					if (!LastCheckpoint) return;
-					LastCheckpoint.CheckpointObject.DoLostEffect();
-					return;
-				}
+					if (LineStatus == PlayerStatus.ReadyAtCheckpoint && !_isStarted)
+					{
+						Play(_fTiming);
+						if (!LastCheckpoint) return;
+						LastCheckpoint.CheckpointObject.DoLostEffect();
+						return;
+					}
 				
-				if (LineStatus == PlayerStatus.Pause && _allowContinue)
-				{
-					Continue();
-					return;
+					if (LineStatus == PlayerStatus.Pause)
+					{
+						Continue();
+						return;
+					}
 				}
 
 				if (!AutoPlayManager.Instance.EnableAuto)
@@ -105,7 +109,7 @@ namespace DancingLineSample.Gameplay
 		}
 		
 		public float CurrentProgress => Mathf.Clamp01(_fTiming / MusicSource.clip.length);
-		public int CurrentTiming => Timing - AudioOffset - AudioOffsetManager.Instance.AudioOffset;
+		public int CurrentTiming => Timing - AudioOffset - AudioManager.Instance.AudioOffset;
 		
 		private LevelGameplayData CurrentGameplayData { get; set; }
 		public LevelGameplayData PlayingGameplayData = new LevelGameplayData();
@@ -171,7 +175,8 @@ namespace DancingLineSample.Gameplay
 			
 			if (isCanceled) return;
 
-			var offset = AudioOffsetManager.Instance.AudioOffset;
+			_isStarted = true;
+			var offset = AudioManager.Instance.AudioOffset;
 			
 			OnPlay();
 			_fTiming = fTiming;
@@ -183,6 +188,7 @@ namespace DancingLineSample.Gameplay
 			}
 			LineStatus = PlayerStatus.Playing;
 			Line.Play();
+			_isStarted = false;
 		}
 
 		private async UniTaskVoid PrepareTask()
@@ -268,6 +274,7 @@ namespace DancingLineSample.Gameplay
 			
 			checkpoint.ResetObjects.ApplyReset();
 			
+			UIManager.Instance.ChangePauseUI(true);
 			LineStatus = PlayerStatus.ReadyAtCheckpoint;
 		}
 

@@ -19,6 +19,7 @@ namespace DancingLineSample.Setting
 		public int FPSLimitIndex;
 		public bool EnablePostProcessing;
 		public int AudioOffset;
+		public int DSPBufferSizeIndex = 1;
 		public bool FullScreen;
 	}
 	public class SettingManager : Singleton<SettingManager>
@@ -79,6 +80,8 @@ namespace DancingLineSample.Setting
 			m_FPSLimitButtonButtonGroup.CurrentValue = _settings.FPSLimitIndex;
 			m_PostProcessingToggleButton.SetActive(_settings.EnablePostProcessing);
 			SetPostProcessingEnableInternal(_settings.EnablePostProcessing);
+			AudioManager.Instance.SetOffset(_settings.AudioOffset);
+			AudioManager.Instance.DSPBufferSizeIndex = _settings.DSPBufferSizeIndex;
 		}
 		
 		private void LoadSettings()
@@ -93,7 +96,8 @@ namespace DancingLineSample.Setting
 #if UNITY_EDITOR
 			byte[] bdata = MsgPackHelper.Serialize(m_DefaultSettings);
 #else
-			_settings.AudioOffset = AudioOffsetManager.Instance.AudioOffset;
+			_settings.DSPBufferSizeIndex = AudioManager.Instance.DSPBufferSizeIndex;
+			_settings.AudioOffset = AudioManager.Instance.AudioOffset;
 			byte[] bdata = MsgPackHelper.Serialize(_settings);
 			print(JsonConvert.SerializeObject(_settings));
 #endif
@@ -160,7 +164,7 @@ namespace DancingLineSample.Setting
 		}
 
 #if UNITY_EDITOR
-		[Button("ToggleQuality")]
+		[MethodButton("ToggleQuality")]
 		public void ToggleQuality()
 		{
 			int qualityLevel = (_settings.QualityLevel + 1) % _maxQualityLevel;

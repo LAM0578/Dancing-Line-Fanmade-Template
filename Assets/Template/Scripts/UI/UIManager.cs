@@ -13,6 +13,7 @@ using UnityEngine.UI;
 using SuperBlur;
 using DancingLineSample.Attributes;
 using DancingLineSample.Objects;
+using UnityEngine.Serialization;
 
 namespace DancingLineSample.UI
 {
@@ -22,19 +23,20 @@ namespace DancingLineSample.UI
 		[SerializeField] internal ReadyUI ReadyUI;
 		[SerializeField] internal ResultUI ResultUI;
 		[SerializeField] internal SettingUI SettingUI;
+		[SerializeField] internal OffsetWizardUI OffsetWizardUI;
 		[SerializeField] internal PauseUI PauseUI;
 		[Space] 
-		public SuperBlurBase SuperBlurBase;
+		public SuperBlurBase BlurController;
 		public Image FakeFogImage;
-
-		private Tween _tween;
 
 		protected override void OnAwake()
 		{
+			ReadyUI.OnAwake();
 			ResultUI.OnAwake();
 			SettingUI.OnAwake();
 			PauseUI.OnAwake();
-			SuperBlurBase.interpolation = 1;
+			OffsetWizardUI.OnAwake();
+			BlurController.interpolation = 1;
 		}
 
 		/// <summary>
@@ -62,7 +64,17 @@ namespace DancingLineSample.UI
 		/// <param name="visible">可见状态</param>
 		public void ChangeSettingUI(bool visible)
 		{
-			SettingUI.ChangeStatus(visible);
+			SettingUI.ChangeStatus(visible, true);
+		}
+		
+		/// <summary>
+		/// 更改设置 UI 的可见状态
+		/// </summary>
+		/// <param name="visible">可见状态</param>
+		/// <param name="play"></param>
+		public Tween ChangeSettingUI(bool visible, bool play)
+		{
+			return SettingUI.ChangeStatus(visible, play);
 		}
 
 		/// <summary>
@@ -73,9 +85,18 @@ namespace DancingLineSample.UI
 		{
 			PauseUI.ChangeStatus(visible);
 		}
+		
+		/// <summary>
+		/// 更改偏移向导 UI 的可见状态
+		/// </summary>
+		/// <param name="visible">可见状态</param>
+		public void ChangeOffsetWizardUI(bool visible)
+		{
+			OffsetWizardUI.ChangeStatus(visible);
+		}
 
 #if UNITY_EDITOR
-		[Button("ResultUITest")]
+		[MethodButton("ResultUITest")]
 		public void ResultUITest()
 		{
 			ResultUI.SetStatus(false);

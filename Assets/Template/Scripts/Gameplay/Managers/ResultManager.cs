@@ -91,7 +91,7 @@ namespace DancingLineSample.Gameplay
 			items = lst.ToArray();
 		}
 
-		[Button("Test crown")]
+		[MethodButton("Test crown")]
 		public void TestCrown()
 		{
 			EnableCrowns(3);

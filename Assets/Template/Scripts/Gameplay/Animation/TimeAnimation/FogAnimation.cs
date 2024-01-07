@@ -97,7 +97,7 @@ namespace DancingLineSample.Gameplay.Animation
 			_tween?.Play();
 		}
 
-		[Button("Set FogSettings from RenderSettings", true)]
+		[MethodButton("Set FogSettings from RenderSettings", true)]
 		private void SetFogSettingsFromRenderSettings()
 		{
 			m_Color.StartValue = RenderSettings.fogColor;

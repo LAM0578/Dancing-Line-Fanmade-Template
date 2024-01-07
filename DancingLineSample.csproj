@@ -92,7 +92,7 @@
      <Compile Include="Assets\Template\Scripts\Gameplay\Data\LevelData.cs" />
      <Compile Include="Assets\Template\Scripts\Gameplay\MainLine.cs" />
      <Compile Include="Assets\Template\Scripts\Gameplay\Managers\AnimationManager.cs" />
-     <Compile Include="Assets\Template\Scripts\Gameplay\Managers\AudioOffsetManager.cs" />
+     <Compile Include="Assets\Template\Scripts\Gameplay\Managers\AudioManager.cs" />
      <Compile Include="Assets\Template\Scripts\Gameplay\Managers\AutoPlayManager.cs" />
      <Compile Include="Assets\Template\Scripts\Gameplay\Managers\CameraManager.cs" />
      <Compile Include="Assets\Template\Scripts\Gameplay\Managers\DataManager.cs" />
@@ -123,6 +123,7 @@
      <Compile Include="Assets\Template\Scripts\UI\UIComponents.cs" />
      <Compile Include="Assets\Template\Scripts\UI\UIManager.cs" />
      <Compile Include="Assets\Template\Scripts\Utility\CollectionUtility.cs" />
+     <Compile Include="Assets\Template\Scripts\Utility\ColoUtility.cs" />
      <Compile Include="Assets\Template\Scripts\Utility\DOTweenUtility.cs" />
      <Compile Include="Assets\Template\Scripts\Utility\FileUtility.cs" />
      <Compile Include="Assets\Template\Scripts\Utility\GameObjectResetStatus.cs" />

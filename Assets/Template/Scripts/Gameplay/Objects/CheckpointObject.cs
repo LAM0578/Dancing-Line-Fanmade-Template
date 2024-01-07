@@ -162,7 +162,7 @@ namespace DancingLineSample.Gameplay.Objects
 		}
 
 #if UNITY_EDITOR
-		[Button("DoEffectTest")]
+		[MethodButton("DoEffectTest")]
 		public void DoEffectTest()
 		{
 			var trans = m_ParticleTransform;

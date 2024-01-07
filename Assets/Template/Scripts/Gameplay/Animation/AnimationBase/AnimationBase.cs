@@ -16,7 +16,7 @@ namespace DancingLineSample.Gameplay.Animation
 		protected float _elapsedTime = float.NegativeInfinity;
 		protected Tween _tween;
 		
-		[Button("Preview Animation")]
+		[MethodButton("Preview Animation")]
 		public void PreviewAnimation()
 		{
 			OnResetAnimation();

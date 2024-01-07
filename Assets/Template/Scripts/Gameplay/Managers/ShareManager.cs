@@ -90,7 +90,7 @@ namespace DancingLineSample.Gameplay
 		/// <summary>
 		/// 保存关卡分享图
 		/// </summary>
-		[Button("SaveShareImage")]
+		[MethodButton("SaveShareImage")]
 		public void SaveShareImage()
 		{
 			bool useShareImage = _currentLevelGameplayData.Progress >= 1 && _shareTexture;

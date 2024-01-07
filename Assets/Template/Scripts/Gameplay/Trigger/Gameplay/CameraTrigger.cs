@@ -21,7 +21,7 @@ namespace DancingLineSample.Gameplay.Trigger
 		private bool _isActived;
 		private Tween _moveTween, _rotateTween, _fovTween;
 		
-		[Button("Active")]
+		[MethodButton("Active")]
 		private void Active()
 		{
 			if (_isActived && !IsRecyclable || 

@@ -50,35 +50,29 @@ namespace DancingLineSample.Editing
 				_fontSize = m_FontSize;
 			}
 			
-			float aspectRatio = Mathf.Max(
-				Screen.width / 1920f, 
-				Screen.height / 1080f
+			float aspectRatio = Mathf.Min(
+				1920f / Screen.width,
+				1080f / Screen.height
 			);
-			
-			// 思考
-			if (!_resolution.CompareResolution(Screen.currentResolution))
-			{
-				_resolution = Screen.currentResolution;
-				updateStyle();
-			}
 			
 			if (Math.Abs(_aspectRatio - aspectRatio) > float.Epsilon)
 			{
-				updateStyle();
 				_aspectRatio = aspectRatio;
+				updateStyle();
 			}
 			
 			return;
 
 			void updateStyle()
 			{
+				// print($"{m_FontSize} * {_aspectRatio} = {m_FontSize / _aspectRatio}");
 				_style = new GUIStyle()
 				{
 					normal = new GUIStyleState()
 					{
 						textColor = m_TextColor,
 					},
-					fontSize = (int)(m_FontSize * _aspectRatio)
+					fontSize = (int)(m_FontSize / _aspectRatio)
 				};
 			}
 		}
@@ -93,8 +87,8 @@ namespace DancingLineSample.Editing
 			var curProgress = gameplayManager.CurrentProgress * 100f;
 			var curPosition = gameplayManager.Line.transform.position;
 			GUI.Label(new Rect(
-					m_FontSize * _aspectRatio, 
-					m_FontSize * _aspectRatio, 
+					m_FontSize / _aspectRatio, 
+					m_FontSize / _aspectRatio, 
 					Screen.width, 
 					Screen.height
 				), 
