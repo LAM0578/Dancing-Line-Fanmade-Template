@@ -10,3 +10,4 @@ Logs/*
 Debug/*
 /License.txt
 /user.keystore
+*.csproj
