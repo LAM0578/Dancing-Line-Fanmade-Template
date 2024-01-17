@@ -31,6 +31,8 @@ namespace SuperBlur
 		public Material blurMaterial;
 
 		public Material UIMaterial;
+		
+		public bool enableBlur = true;
 
 
 		protected void Blur (RenderTexture source, RenderTexture destination)
@@ -42,6 +44,12 @@ namespace SuperBlur
 			else
 			{
 				Shader.DisableKeyword("GAMMA_CORRECTION");
+			}
+			
+			if (!enableBlur)
+			{
+				Graphics.Blit(source, destination);
+				return;
 			}
 
 			int kernel = 0;

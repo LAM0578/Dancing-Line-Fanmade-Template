@@ -1,5 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using Cysharp.Threading.Tasks;
 using DancingLineSample.Gameplay;
 using DancingLineSample.UI.Components;
 using DancingLineSample.Utility;
@@ -9,6 +12,7 @@ using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Newtonsoft.Json;
 using DancingLineSample.Attributes;
+using DancingLineSample.UI;
 
 namespace DancingLineSample.Setting
 {
@@ -20,14 +24,15 @@ namespace DancingLineSample.Setting
 		public bool EnablePostProcessing;
 		public int AudioOffset;
 		public int DSPBufferSizeIndex = 1;
-		public bool FullScreen;
+		public bool FullScreen = true;
+		public bool EnableUIBlur = true;
 	}
 	public class SettingManager : Singleton<SettingManager>
 	{
 #pragma warning disable
 		
-		[Header("Quality Settings")]
 		[Space]
+		[Header("Quality Settings")]
 		[SerializeField] private SwitchButtonGroup m_QualityButtonButtonGroup;
 		[SerializeField] private Text m_QualityNameText;
 		[SerializeField] private string[] m_QualityNames;
@@ -36,10 +41,19 @@ namespace DancingLineSample.Setting
 		[SerializeField] private SwitchButtonGroup m_FPSLimitButtonButtonGroup;
 		[SerializeField] private Text m_FPSLimitText;
 		[SerializeField] private int[] m_FPSLimitValues;
+		[Space]
 		[Header("Post Processing Settings")]
 		[SerializeField] private ValueAnimationButton m_PostProcessingToggleButton;
 		[SerializeField] private PostProcessVolume m_PostProcessingVolume;
 		[Space]
+		[Header("Full Screen Settings")]
+		[SerializeField] private GameObject m_EnableFullScreenPanel;
+		[SerializeField] private ValueAnimationButton m_EnableFullScreenButton;
+		[Space]
+		[Header("UI Blur Settings")]
+		[SerializeField] private ValueAnimationButton m_EnableUIBlurButton;
+		[Space]
+		[Header("Other")]
 		[SerializeField] private GameSettings m_DefaultSettings;
 		
 #pragma warning restore
@@ -47,19 +61,27 @@ namespace DancingLineSample.Setting
 		private static string _settingDataPath => Path.Combine(Application.persistentDataPath, "Setting.data");
 
 		private static int _maxQualityLevel;
-		private static int _maxFPSLimitCount;
+		private static int _maxFPSIndex;
 		private GameSettings _settings;
+		
+		private Resolution _lastResolution;
+		private Resolution _fullScreenResolution;
 
 		protected override void OnAwake()
 		{
+#if UNITY_ANDROID || UNITY_IOS
+			m_EnableFullScreenPanel.SetActive(false);
+#endif
+			_fullScreenResolution = Screen.currentResolution;
+			_lastResolution = new Resolution() { width = Screen.width, height = Screen.height };
 			_maxQualityLevel = QualitySettings.names.Length - 1;
-			_maxFPSLimitCount = m_FPSLimitValues.Length - 1;
+			_maxFPSIndex = m_FPSLimitValues.Length - 1;
 			// Quality Button Group
 			m_QualityButtonButtonGroup.Init();
 			m_QualityButtonButtonGroup.SetValueRange(0, _maxQualityLevel);
 			// FPS Limit Button Group
 			m_FPSLimitButtonButtonGroup.Init();
-			m_FPSLimitButtonButtonGroup.SetValueRange(0, _maxFPSLimitCount);
+			m_FPSLimitButtonButtonGroup.SetValueRange(0, _maxFPSIndex);
 			// Init
 			AddButtonsListeners();
 			LoadSettings();
@@ -69,19 +91,29 @@ namespace DancingLineSample.Setting
 		{
 			m_QualityButtonButtonGroup.onValueChanged.AddListener(SetQualityLevelInternal);
 			m_FPSLimitButtonButtonGroup.onValueChanged.AddListener(SetFPSLimitInternal);
-			m_PostProcessingToggleButton.onClick.AddListener(SetPostProcessingEnable);
+			m_PostProcessingToggleButton.onClick.AddListener(SetPostProcessingEnableInternal);
+			m_EnableFullScreenButton.onClick.AddListener(SetFullScreenInternal);
+			m_EnableUIBlurButton.onClick.AddListener(SetUIBlurEnableInternal);
 		}
 
 		#region Read / Write Settings From / To File
 		
 		private void AfterLoadSettings()
 		{
+			// 从设置读取值设置按钮状态
 			m_QualityButtonButtonGroup.CurrentValue = _settings.QualityLevel;
 			m_FPSLimitButtonButtonGroup.CurrentValue = _settings.FPSLimitIndex;
 			m_PostProcessingToggleButton.SetActive(_settings.EnablePostProcessing);
-			SetPostProcessingEnableInternal(_settings.EnablePostProcessing);
+			m_EnableFullScreenButton.SetActive(_settings.FullScreen);
+			m_EnableUIBlurButton.SetActive(_settings.EnableUIBlur);
+			// 从设置读取值设置状态
+			m_PostProcessingVolume.enabled = _settings.EnablePostProcessing;
 			AudioManager.Instance.SetOffset(_settings.AudioOffset);
 			AudioManager.Instance.DSPBufferSizeIndex = _settings.DSPBufferSizeIndex;
+			UIManager.Instance.BlurController.enableBlur = _settings.EnableUIBlur;
+#if UNITY_STANDALONE_WIN
+			Screen.fullScreen = _settings.FullScreen;
+#endif
 		}
 		
 		private void LoadSettings()
@@ -125,7 +157,7 @@ namespace DancingLineSample.Setting
 		
 		private void SetFPSLimitInternal(int index)
 		{
-			if (index < 0 || index > _maxFPSLimitCount) return;
+			if (index < 0 || index > _maxFPSIndex) return;
 			int fpsLimit = m_FPSLimitValues[index];
 			_settings.FPSLimitIndex = index;
 #if UNITY_ANDROID || UNITY_IOS
@@ -141,36 +173,56 @@ namespace DancingLineSample.Setting
 		
 		#region Post Processing Settings
 		
+		/// <summary>
+		/// 设置后处理效果的启用状态
+		/// </summary>
+		/// <param name="enable">启用状态</param>
 		private void SetPostProcessingEnableInternal(bool enable)
 		{
 			_settings.EnablePostProcessing = enable;
 			m_PostProcessingVolume.enabled = enable;
 		}
 		
-		/// <summary>
-		/// 设置后处理效果的状态
-		/// </summary>
-		public void SetPostProcessingEnable(bool enable)
-		{
-			_settings.EnablePostProcessing = enable;
-			SetPostProcessingEnableInternal(_settings.EnablePostProcessing);
-		}
-		
 		#endregion
 
+		#region Full Screen Settings
+
+		/// <summary>
+		/// 设置是否全屏
+		/// </summary>
+		/// <param name="fullScreen">全屏</param>
+		private void SetFullScreenInternal(bool fullScreen)
+		{
+#if UNITY_STANDALONE_WIN
+			if (fullScreen)
+			{
+				_lastResolution = new Resolution() { width = Screen.width, height = Screen.height };
+			}
+			_settings.FullScreen = fullScreen;
+			var targetResolution = fullScreen ? _fullScreenResolution : _lastResolution;
+			Screen.SetResolution(targetResolution.width, targetResolution.height, fullScreen);
+#endif
+		}
+
+		#endregion
+
+		#region Blur UI Settings
+
+		/// <summary>
+		/// 设置 UI 模糊的启用状态
+		/// </summary>
+		/// <param name="enableBlur">启用状态</param>
+		private void SetUIBlurEnableInternal(bool enableBlur)
+		{
+			_settings.EnableUIBlur = enableBlur;
+			UIManager.Instance.BlurController.enableBlur = enableBlur;
+		}
+
+		#endregion
+		
 		private void OnApplicationQuit()
 		{
 			SaveSettings();
 		}
-
-#if UNITY_EDITOR
-		[MethodButton("ToggleQuality")]
-		public void ToggleQuality()
-		{
-			int qualityLevel = (_settings.QualityLevel + 1) % _maxQualityLevel;
-			_settings.QualityLevel = qualityLevel;
-			QualitySettings.SetQualityLevel(qualityLevel);
-		}
-#endif
 	}
 }

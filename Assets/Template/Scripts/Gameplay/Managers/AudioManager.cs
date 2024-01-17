@@ -60,6 +60,7 @@ namespace DancingLineSample.Gameplay
 				int size = _dspBufferSizeInternal[value];
 				m_DspBufferText.text = size.ToString();
 				SetDSPBufferSize(size);
+				m_DspBufferButtonGroup.SetValueWithoutNotify(value);
 			}
 		}
 		
@@ -71,6 +72,7 @@ namespace DancingLineSample.Gameplay
 				if (_audioOffset == value) return;
 				m_OffsetText.text = (value >= 0 ? "+" : "") + value;
 				_audioOffset = value;
+				m_OffsetButtonGroup.SetValueWithoutNotify(value);
 			}
 		}
 

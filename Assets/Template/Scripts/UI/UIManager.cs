@@ -26,9 +26,10 @@ namespace DancingLineSample.UI
 		[SerializeField] internal OffsetWizardUI OffsetWizardUI;
 		[SerializeField] internal PauseUI PauseUI;
 		[Space] 
-		public SuperBlurBase BlurController;
-		public Image FakeFogImage;
-
+		[SerializeField] private SuperBlurBase m_BlurController;
+		[SerializeField] private Image m_FakeFogImage;
+		public SuperBlurBase BlurController => m_BlurController;
+		
 		protected override void OnAwake()
 		{
 			ReadyUI.OnAwake();
@@ -95,15 +96,6 @@ namespace DancingLineSample.UI
 			OffsetWizardUI.ChangeStatus(visible);
 		}
 
-#if UNITY_EDITOR
-		[MethodButton("ResultUITest")]
-		public void ResultUITest()
-		{
-			ResultUI.SetStatus(false);
-			ResultUI.ChangeStatus(true);
-		}
-#endif
-
 		/// <summary>
 		/// 当需要过渡时调用此方法
 		/// </summary>
@@ -112,7 +104,7 @@ namespace DancingLineSample.UI
 			var col = RenderSettings.fogColor;
 			col.a = 1;
 			var endCol = new Color(col.r, col.g, col.b, 0);
-			var img = FakeFogImage;
+			var img = m_FakeFogImage;
 
 			var sequence = DOTween.Sequence();
 			sequence.Append(img.DOColor(col, 0.5f));

@@ -25,9 +25,9 @@ namespace DancingLineSample.UI
 	}
 	
 	[Serializable]
-	internal class ReadyUI : UIComponent
+	internal sealed class ReadyUI : UIComponent
 	{
-		protected ReadyUI() { }
+		private ReadyUI() { }
 		
 		[SerializeField] private CanvasGroup m_CanvasGroup;
 		[SerializeField] private RectTransform m_RectTrans;
@@ -83,9 +83,9 @@ namespace DancingLineSample.UI
 		}
 	}
 	[Serializable]
-	internal class ResultUI : UIComponent
+	internal sealed class ResultUI : UIComponent
 	{
-		protected ResultUI() { }
+		private ResultUI() { }
 		
 		public RectTransform Top;
 		public RectTransform Bottom;
@@ -190,9 +190,9 @@ namespace DancingLineSample.UI
 	}
 
 	[Serializable]
-	internal class SettingUI : UIComponent
+	internal sealed class SettingUI : UIComponent
 	{
-		protected SettingUI() { }
+		private SettingUI() { }
 		
 		[SerializeField] private CanvasGroup m_CanvasGroup;
 		[SerializeField] private RectTransform m_TopRectTrans;
@@ -358,9 +358,9 @@ namespace DancingLineSample.UI
 	}
 
 	[Serializable]
-	internal class PauseUI : UIComponent
+	internal sealed class PauseUI : UIComponent
 	{
-		protected PauseUI() { }
+		private PauseUI() { }
 		
 		[SerializeField] private CanvasGroup m_CanvasGroup;
 		[SerializeField] private RectTransform m_RectTrans;
@@ -409,9 +409,9 @@ namespace DancingLineSample.UI
 	}
 
 	[Serializable]
-	internal class OffsetWizardUI : UIComponent
+	internal sealed class OffsetWizardUI : UIComponent
 	{
-		protected OffsetWizardUI() { }
+		private OffsetWizardUI() { }
 		
 		[SerializeField] private CanvasGroup m_CanvasGroup;
 		[SerializeField] private RectTransform m_TopRectTrans;

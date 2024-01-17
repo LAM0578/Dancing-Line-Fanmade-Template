@@ -141,5 +141,15 @@ namespace DancingLineSample.UI.Components
 				UpdateButtonStatus();
 			}
 		}
+
+		/// <summary>
+		/// 在不调用 onValueChanged 的情况下设置值
+		/// </summary>
+		/// <param name="value"></param>
+		public void SetValueWithoutNotify(int value)
+		{
+			_currentValue = value;
+			UpdateButtonStatus();
+		}
 	}
 }

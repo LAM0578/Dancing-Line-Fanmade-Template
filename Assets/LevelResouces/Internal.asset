@@ -1427,7 +1427,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8e6292b2c06870d4495f009f912b9600, type: 3}
-  m_Name: Test
+  m_Name: Internal
   m_EditorClassIdentifier: 
   settings:
   - {fileID: 7936591823819938441}
@@ -1457,7 +1457,7 @@ MonoBehaviour:
     value: 360
   sampleCount:
     overrideState: 1
-    value: 7
+    value: 5
 --- !u!114 &7315957561915967184
 MonoBehaviour:
   m_ObjectHideFlags: 3

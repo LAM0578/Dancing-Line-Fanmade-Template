@@ -2,6 +2,7 @@
 {
 	Properties
 	{
+		[HideInInspector] _MainTex ("Main Texture", 2D) = "white" {} // 避免在打包后运行报错
 		_SuperBlurTexture ("Background Texture", 2D) = "white" {}
 
 		_Color ("Tint", Color) = (1,1,1,0)

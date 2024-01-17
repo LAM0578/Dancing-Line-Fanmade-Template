@@ -419,6 +419,7 @@ namespace DancingLineSample.Gameplay
 			CameraManager.Instance.UpdateFollowPos = false;
 			UIManager.Instance.ChangeResultUI(true);
 			FadeOutMusic();
+			DataManager.Instance.SaveData();
 		}
 
 		/// <summary>
@@ -430,6 +431,7 @@ namespace DancingLineSample.Gameplay
 			PlayingGameplayData.Progress = progress;
 			ResultManager.Instance.SetResult(PlayingGameplayData);
 			UpdateLevelData();
+			DataManager.Instance.SaveData();
 		}
 
 		/// <summary>
