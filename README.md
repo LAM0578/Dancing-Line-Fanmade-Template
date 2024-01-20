@@ -84,3 +84,9 @@ __请注意，使用本模板需要有一定的 C# 基础，不提供 C# 基础�
 - 新增了全屏 / 非全屏切换 (仅 `UNITY_STANDALONE_WIN`)
 - 现在开始会在结算的时候保存存档了
 - 现在开始默认会在打包后运行时的 `Awake` 自动销毁场景中的 `[Graphy]` 和 `IngameDebugConsole`
+
+### 2024/1/20 - 2024012000 更新
+- 在获取进度的时候增加了一个判断 Clip 是否为空的逻辑, 避免 `NullReferenceException`
+- 修改了部分模板资源的位置
+- 将关卡内容修改为 Prefab 便于直接使用 (`LevelContainer`)
+- 空场景更新 (`LevelContainer` 测试)

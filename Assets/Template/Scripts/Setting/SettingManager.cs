@@ -120,9 +120,14 @@ namespace DancingLineSample.Setting
 		{
 			_settings = MsgPackHelper
 				.TryReadAndDeserializeFromFile(_settingDataPath, m_DefaultSettings);
+		}
+
+		private void Start()
+		{
+			// 写在这里避免在某些时候触发 Null Reference Exception
 			AfterLoadSettings();
 		}
-		
+
 		public void SaveSettings()
 		{
 #if UNITY_EDITOR

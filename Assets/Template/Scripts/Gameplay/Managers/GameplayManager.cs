@@ -108,7 +108,7 @@ namespace DancingLineSample.Gameplay
 			set => _fTiming = value / 1000f;
 		}
 		
-		public float CurrentProgress => Mathf.Clamp01(_fTiming / MusicSource.clip.length);
+		public float CurrentProgress => MusicSource.clip ? Mathf.Clamp01(_fTiming / MusicSource.clip.length) : 0;
 		public int CurrentTiming => Timing - AudioOffset - AudioManager.Instance.AudioOffset;
 		
 		private LevelGameplayData CurrentGameplayData { get; set; }
@@ -427,7 +427,7 @@ namespace DancingLineSample.Gameplay
 		/// </summary>
 		public void CalculateResult()
 		{
-			float progress = Mathf.Clamp01(_fTiming / MusicSource.clip.length);
+			float progress = CurrentProgress;
 			PlayingGameplayData.Progress = progress;
 			ResultManager.Instance.SetResult(PlayingGameplayData);
 			UpdateLevelData();
