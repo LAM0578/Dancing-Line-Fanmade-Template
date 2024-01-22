@@ -5516,6 +5516,7 @@ Transform:
   m_Children:
   - {fileID: 7731441118631087337}
   - {fileID: 7731441119143811529}
+  - {fileID: 7466254947911580792}
   m_Father: {fileID: 7731441119081074346}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -10545,3 +10546,71 @@ MonoBehaviour:
   m_MaskInteraction: 85
   m_UseStencil: 1
   m_RaycastFilter: 0
+--- !u!1 &8436667510057795422
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7466254947911580792}
+  - component: {fileID: 8171286592131170194}
+  m_Layer: 0
+  m_Name: BeatlineDisplay
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7466254947911580792
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8436667510057795422}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 7731441119544639294}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8171286592131170194
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8436667510057795422}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e804e0a8fb8fc547b64bdf899e94327, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Enable: 0
+  m_EnableText: 0
+  m_StartTiming: 0
+  m_RenderRange: 0
+  m_Offset: 0
+  m_Bpm: 0
+  m_Speed: 0
+  m_BeatlineDensity: 4
+  m_StartPosition: {x: 0, y: 0, z: 0}
+  m_XOffset: 0
+  m_Rotation: {x: 0, y: 0, z: 0}
+  m_Scale: 100
+  m_LabelPosition: 100
+  m_StartForward: {x: 0, y: 0, z: 1}
+  m_TurnForward: {x: 1, y: 0, z: 0}
+  ImportanceColors:
+  - serializedVersion: 2
+    rgba: 4292137996
+  - serializedVersion: 2
+    rgba: 4283946560
+  - serializedVersion: 2
+    rgba: 4286414335
+  - serializedVersion: 2
+    rgba: 4288697514
+  RenderBeatlines: []

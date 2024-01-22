@@ -86,7 +86,13 @@ __请注意，使用本模板需要有一定的 C# 基础，不提供 C# 基础�
 - 现在开始默认会在打包后运行时的 `Awake` 自动销毁场景中的 `[Graphy]` 和 `IngameDebugConsole`
 
 ### 2024/1/20 - 2024012000 更新
+> 将 Prefab `LevelContainer` 导入场景内时请先右键点击 `Unpack Prefab` 或 `Unpack Prefab Completely`
 - 在获取进度的时候增加了一个判断 Clip 是否为空的逻辑, 避免 `NullReferenceException`
 - 修改了部分模板资源的位置
 - 将关卡内容修改为 Prefab 便于直接使用 (`LevelContainer`)
 - 空场景更新 (`LevelContainer` 测试)
+
+### 2024/1/23 - 2024012300 更新
+- 新增谱面转换功能 (目前内置仅支持 Arcaea 谱面转换 (*.aff), 其他谱面转换需自己写)
+- 新增 `BeatlineDisplay`, 用于可视化小节线, 目前不支持带变 BPM 的
+- 修复了当前时间大于音频时间时如果暂停再继续会报错的问题 (虽然是 Unity 自己的报错, 但我还是处理一下)

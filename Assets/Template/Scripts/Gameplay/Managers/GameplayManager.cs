@@ -352,8 +352,11 @@ namespace DancingLineSample.Gameplay
 			IsPlaying = true;
 			LineStatus = PlayerStatus.Playing;
 			Line.Continue();
-			MusicSource.Play();
-			MusicSource.time = _fTiming;
+			if (MusicSource.clip && _fTiming < MusicSource.clip.length)
+			{
+				MusicSource.Play();
+				MusicSource.time = _fTiming;
+			}
 			CameraManager.Instance.ContinueTriggers();
 			AnimationManager.Instance.Continue();
 			UIManager.Instance.ChangePauseUI(false);
