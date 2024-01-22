@@ -11,3 +11,5 @@ Debug/*
 /License.txt
 /user.keystore
 *.csproj
+Assets/NCat/*
+Assets/NCat.meta
