@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using DancingLineSample.Attributes;
 using DancingLineSample.Editing.Utility;
 using DancingLineSample.Gameplay.Trigger;
 using DancingLineSample.Utility;
@@ -144,6 +145,19 @@ namespace DancingLineSample.Gameplay
 			{
 				t.ChangeTweenStatus(false);
 			}
+		}
+		
+		/// <summary>
+		/// 从 TargetCamera 设置相机重置状态
+		/// </summary>
+		[MethodButton("Set ResetCameraStatus from TargetCamera", true)]
+		public void SetResetCameraStatusFromTargetCamera()
+		{
+			var cam = TargetCamera;
+			var camTrans = cam.transform;
+			CameraResetStatus.ResetFieldOfView = cam.fieldOfView;
+			CameraResetStatus.ResetRotation = camTrans.rotation.eulerAngles;
+			CameraResetStatus.ResetOffset = camTrans.position - FollowObject.position;
 		}
 		
 #if UNITY_EDITOR

@@ -13,3 +13,5 @@ Debug/*
 *.csproj
 Assets/NCat/*
 Assets/NCat.meta
+Assets/AddressableAssetsData/*
+Assets/AddressableAssetsData.meta

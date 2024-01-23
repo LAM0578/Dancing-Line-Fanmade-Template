@@ -12,6 +12,14 @@ namespace DancingLineSample.Gameplay.Animation
 		[Tooltip("在 Awake 方法被调用时激活动画")]
 		private bool m_ActiveOnAwake;
 		
+		[SerializeField]
+		[Tooltip("手动设置 Animator 的动画名称")]
+		private bool m_UseManualAnimName;
+
+		[PropertyActive("m_UseManualAnimName", false)]
+		[SerializeField] 
+		private string m_AnimName;
+		
 #pragma warning restore
 		
 		private Animator _animator;
@@ -21,6 +29,7 @@ namespace DancingLineSample.Gameplay.Animation
 
 		protected override void OnActiveAnimation()
 		{
+			_animator.Play(_curAnimStateInfoHash, 0, 0);
 			_animator.speed = 1;
 		}
 		
@@ -68,7 +77,9 @@ namespace DancingLineSample.Gameplay.Animation
 			_animator = TargetObject;
 			_animator.speed = m_ActiveOnAwake ? 1 : 0;
 			
-			_curAnimStateInfoHash = _animator.GetCurrentAnimatorStateInfo(0).shortNameHash;
+			_curAnimStateInfoHash = m_UseManualAnimName ? 
+				Animator.StringToHash(m_AnimName) : 
+				_animator.GetCurrentAnimatorStateInfo(0).shortNameHash;
 			
 			var animClipInfos = _animator.GetCurrentAnimatorClipInfo(0);
 			if (animClipInfos.Length < 1) return;

@@ -99,3 +99,13 @@ __请注意，使用本模板需要有一定的 C# 基础，不提供 C# 基础�
 
 ### 2024/1/23 - 2024012301 更新
 - 修改了 `RoadDisplay` 和 `BeatlineDisplay` 的可视时间点为无偏移的时间点
+
+### 2024/1/24 - 2024012400 更新
+- 修改了 `BeatlineDisplay` 的渲染方式
+- 修复了 `AnimatorAnimation` 和 `AnimatorAnimationTrigger` 无法播放 / 重置的问题
+- 在 `AnimatorAnimation` 和 `AnimatorAnimationTrigger` 中新增手动设置动画名称的功能 (`m_UseManualAnimName`)
+- 修复了 `CameraTrigger` 在使用增量 (`IsAdd`) 的情况下会越来越大的问题
+- 修复了 `PropertyActive` 在某些时候会报 `NullReferenceException` 的问题
+- 在 `TransformAnimation` 和 `TransformAnimationTrigger` 中增加了 `SwapValues` 方法便于快速交换值位置
+- 新增了一个 `QualitySettingEvent` 便于在设置画质时设置一些对象状态
+- 新增了 `ProBuilder` 包位于 `Packages/manifest.json` 中

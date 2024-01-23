@@ -13,9 +13,11 @@ namespace DancingLineSample.Gameplay
 	{
 		private List<TimeAnimationComponentBase<Transform>> _transformAnimations = new List<TimeAnimationComponentBase<Transform>>();
 		private List<TimeAnimationComponentBase<Material>> _materialAnimations = new List<TimeAnimationComponentBase<Material>>();
+		private List<TimeAnimationComponentBase<Animator>> _animatorAnimations = new List<TimeAnimationComponentBase<Animator>>();
 
 		private List<TriggerAnimationComponentBase<Transform>> _transformAnimationTriggers = new List<TriggerAnimationComponentBase<Transform>>();
 		private List<TriggerAnimationComponentBase<Material>> _materialAnimationTriggers = new List<TriggerAnimationComponentBase<Material>>();
+		private List<TriggerAnimationComponentBase<Animator>> _animatorAnimationTriggers = new List<TriggerAnimationComponentBase<Animator>>();
 
 		private List<TimeAnimationBase> _timeAnimations = new List<TimeAnimationBase>();
 		private List<TriggerAnimationBase> _triggerAnimations = new List<TriggerAnimationBase>();
@@ -37,6 +39,9 @@ namespace DancingLineSample.Gameplay
 				.ToList();
 			_triggerAnimations = FindObjectsOfType<TriggerAnimationBase>().ToList();
 			
+			_animatorAnimations = FindObjectsOfType<TimeAnimationComponentBase<Animator>>().ToList();
+			_animatorAnimationTriggers = FindObjectsOfType<TriggerAnimationComponentBase<Animator>>().ToList();
+			
 			DOTween.SetTweensCapacity(32767, 32767);
 		}
 
@@ -55,6 +60,12 @@ namespace DancingLineSample.Gameplay
 				anim.ActiveAnimation();
 			}
 			foreach (var anim in _timeAnimations)
+			{
+				if (anim.Actived || curTiming < anim.TriggerTime) continue;
+				anim.ActiveAnimation();
+			}
+
+			foreach (var anim in _animatorAnimations)
 			{
 				if (anim.Actived || curTiming < anim.TriggerTime) continue;
 				anim.ActiveAnimation();
@@ -108,6 +119,19 @@ namespace DancingLineSample.Gameplay
 				anim.ResetAnimation();
 			foreach (var trigger in triggerAnimations)
 				trigger.ResetAnimation(onCheckpoint);
+			
+			// animator
+			
+			var animatorAnimations = _animatorAnimations.CopyList();
+			if (reverse) animatorAnimations.Reverse();
+			
+			var animatorAnimationTriggers = _animatorAnimationTriggers.CopyList();
+			if (reverse) animatorAnimationTriggers.Reverse();
+			
+			foreach (var anim in animatorAnimations)
+				anim.ResetAnimation();
+			foreach (var trigger in animatorAnimationTriggers)
+				trigger.ResetAnimation(onCheckpoint);
 		}
 
 		/// <summary>
@@ -134,37 +158,11 @@ namespace DancingLineSample.Gameplay
 				anim.SetAnimationStatusByTime(fTiming);
 			foreach (var trigger in _triggerAnimations)
 				trigger.SetAnimationStatusByTime(fTiming);
-		}
-
-		/// <summary>
-		/// 根据时间强制结束动画
-		/// </summary>
-		/// <param name="timing">时间 (ms)</param>
-		[Obsolete("Use AnimationManager.SetAnimationStatusByTiming() instead.")]
-		public void ForceFinishAnimationsByTiming(int timing)
-		{
-			foreach (var anim in 
-			         _transformAnimations
-				         .Where(t => t && t.TriggerTime <= timing))
-				anim.FinishAnimation();
-			foreach (var anim in 
-			         _materialAnimations
-				         .Where(t => t && t.TriggerTime <= timing))
-				anim.FinishAnimation();
 			
-			foreach (var trigger in _transformAnimationTriggers
-				         .Where(t => t && t.TriggerTime <= timing))
-				trigger.FinishAnimation();
-			foreach (var trigger in _materialAnimationTriggers
-				         .Where(t => t && t.TriggerTime <= timing))
-				trigger.FinishAnimation();
-			
-			foreach (var anim in _timeAnimations
-				         .Where(t => t))
-				anim.FinishAnimation();
-			foreach (var trigger in _triggerAnimations
-				         .Where(t => t))
-				trigger.FinishAnimation();
+			foreach (var anim in _animatorAnimations)
+				anim.SetAnimationStatusByTime(fTiming);
+			foreach (var trigger in _animatorAnimationTriggers)
+				trigger.SetAnimationStatusByTime(fTiming);
 		}
 
 		/// <summary>
@@ -187,6 +185,11 @@ namespace DancingLineSample.Gameplay
 			foreach (var anim in _timeAnimations)
 				anim.Pause();
 			foreach (var trigger in _triggerAnimations)
+				trigger.Pause();
+			
+			foreach (var anim in _animatorAnimations)
+				anim.Pause();
+			foreach (var trigger in _animatorAnimationTriggers)
 				trigger.Pause();
 		}
 
@@ -211,6 +214,11 @@ namespace DancingLineSample.Gameplay
 				trigger.Continue();
 			foreach (var anim in _timeAnimations)
 				anim.Continue();
+			
+			foreach (var anim in _animatorAnimations)
+				anim.Continue();
+			foreach (var trigger in _animatorAnimationTriggers)
+				trigger.Continue();
 		}
 	}
 }

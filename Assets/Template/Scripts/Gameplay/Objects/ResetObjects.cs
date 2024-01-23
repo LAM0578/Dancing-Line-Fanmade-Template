@@ -124,7 +124,7 @@ namespace DancingLineSample.Gameplay.Objects
 			[SerializeField] private string m_PropertyName;
 			
 			[Tooltip("特性类型")]
-			[SerializeField] private PropertyType m_PropertyType;
+			[SerializeField] private PropertyType m_PropertyType = PropertyType.Float;
 
 			[PropertyActive("m_PropertyType", PropertyType.Float, CompareType.NotEqul)] 
 			[Tooltip("浮点型特性值")]

@@ -13,6 +13,7 @@ using UnityEngine.UI;
 using Newtonsoft.Json;
 using DancingLineSample.Attributes;
 using DancingLineSample.UI;
+using UnityEngine.Events;
 
 namespace DancingLineSample.Setting
 {
@@ -27,6 +28,8 @@ namespace DancingLineSample.Setting
 		public bool FullScreen = true;
 		public bool EnableUIBlur = true;
 	}
+	[Serializable]
+	public class QualitySettingEvent : UnityEvent<int> { }
 	public class SettingManager : Singleton<SettingManager>
 	{
 #pragma warning disable
@@ -55,6 +58,7 @@ namespace DancingLineSample.Setting
 		[Space]
 		[Header("Other")]
 		[SerializeField] private GameSettings m_DefaultSettings;
+		[SerializeField] private QualitySettingEvent m_OnQualitySet = new QualitySettingEvent();
 		
 #pragma warning restore
 		
@@ -151,10 +155,14 @@ namespace DancingLineSample.Setting
 			
 			_settings.QualityLevel = qualityLevel;
 			QualitySettings.SetQualityLevel(qualityLevel);
+			m_OnQualitySet?.Invoke(qualityLevel);
 
 			if (qualityLevel >= m_QualityNames.Length) return;
 			m_QualityNameText.text = m_QualityNames[qualityLevel];
 		}
+		
+		public void AddSetQualityListener(UnityAction<int> listener) => m_OnQualitySet.AddListener(listener);
+		public void RemoveSetQualityListener(UnityAction<int> listener) => m_OnQualitySet.RemoveListener(listener);
 
 		#endregion
 

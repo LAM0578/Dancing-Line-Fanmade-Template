@@ -1,3 +1,4 @@
+using DancingLineSample.Attributes;
 using DG.Tweening;
 using UnityEngine;
 
@@ -175,6 +176,44 @@ namespace DancingLineSample.Gameplay.Animation
 		{
 			if (!other.gameObject.CompareTag("Player")) return;
 			ActiveAnimation();
+		}
+		
+		/// <summary>
+		/// 交换值位置
+		/// </summary>
+		[MethodButton("Swap Values", true)]
+		public void SwapValues()
+		{
+			if (m_Position.Enable && !m_Position.IsAdd)
+			{
+				(m_Position.StartValue, m_Position.TargetValue) = 
+					(m_Position.TargetValue, m_Position.StartValue);
+			}
+			
+			if (m_Rotation.Enable && !m_Rotation.IsAdd)
+			{
+				(m_Rotation.StartValue, m_Rotation.TargetValue) = 
+					(m_Rotation.TargetValue, m_Rotation.StartValue);
+			}
+			
+			if (m_Scale.Enable && !m_Scale.IsAdd)
+			{
+				(m_Scale.StartValue, m_Scale.TargetValue) = 
+					(m_Scale.TargetValue, m_Scale.StartValue);
+			}
+		}
+		
+		/// <summary>
+		/// 从对象设置值
+		/// </summary>
+		[MethodButton("Set Values From Object", true)]
+		public void SetValuesFromObject()
+		{
+			m_Position.StartValue = m_Position.IsLocal ? 
+				TargetObject.localPosition : TargetObject.position;
+			m_Rotation.StartValue = m_Rotation.IsLocal ? 
+				TargetObject.localRotation.eulerAngles : TargetObject.rotation.eulerAngles;
+			m_Scale.StartValue = TargetObject.localScale;
 		}
 	}
 }

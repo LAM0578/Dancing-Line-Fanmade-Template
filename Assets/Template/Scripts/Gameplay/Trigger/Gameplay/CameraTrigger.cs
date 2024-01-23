@@ -31,9 +31,10 @@ namespace DancingLineSample.Gameplay.Trigger
 			if (Move.Enable)
 			{
 				var move = new Vector3();
+				var originOffset = CameraManager.Instance.TriggerOffset;
 				_moveTween = DOTween.To(() => move, x =>
 				{
-					if (Move.IsAdded) CameraManager.Instance.TriggerOffset += x;
+					if (Move.IsAdded) CameraManager.Instance.TriggerOffset = originOffset + x;
 					else CameraManager.Instance.TriggerOffset = x;
 				}, Move.Value, Move.Duration).
 					SetEase(Move.Easing);

@@ -37,7 +37,7 @@ public class PropertyActiveEditor : PropertyDrawer
         //获取当前属性所在的类，例如当前属性是a.b，那么就是获取a
         var parent = property.GetActualObjectParent();
         //获取用于条件判断的字段信息，值以及类型
-        var ComparePropertyField = parent.GetType()
+        var ComparePropertyField = parent?.GetType()
             .GetField(field, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
         var ComparePropertyValue = ComparePropertyField?.GetValue(parent);
         var ComparePropertyType = ComparePropertyValue?.GetType();
