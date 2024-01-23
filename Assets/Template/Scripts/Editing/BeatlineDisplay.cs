@@ -107,11 +107,11 @@ public class BeatlineDisplay : MonoBehaviour
 		var rot = (RotationFromForward(m_TurnForward) - RotationFromForward(m_StartForward)) / 2;
 		for (int i = 0; i < _beatlines.Count - 1; i++)
 		{
-			int timing = _beatlines[i].Timing + m_Offset;
-			int nextTiming = _beatlines[i + 1].Timing + m_Offset;
+			int timing = _beatlines[i].Timing;
+			int nextTiming = _beatlines[i + 1].Timing;
 			
 			int dirTime = nextTiming - timing;
-			float length = dirTime / 1000f * m_Speed;
+			float length = (dirTime + (i == 0 ? m_Offset : 0)) / 1000f * m_Speed;
 			
 			var targetForward = i % 2 == 0 ? m_StartForward : m_TurnForward;
 			var nextPos = currentPos + targetForward * length;
@@ -127,7 +127,6 @@ public class BeatlineDisplay : MonoBehaviour
 				p1.x = -m_Scale + m_XOffset;
 				var p2 = noRotCurrentPos;
 				p2.x = m_Scale + m_XOffset;
-				// print($"{beatline.Timing}, {beatline.Importance}, {p1.z}");
 				p1 = RotatePointAroundPivot(p1, m_StartPosition, m_Rotation);
 				p2 = RotatePointAroundPivot(p2, m_StartPosition, m_Rotation);
 				var color = ImportanceColors[_beatlines[i].Importance];
@@ -167,8 +166,9 @@ public class BeatlineDisplay : MonoBehaviour
 
 	private void RenderBeatline(RenderBeatlineData beatline)
 	{
-		Handles.color = beatline.Color;
-		Handles.DrawAAPolyLine(5, beatline.LinePoints);
+		Gizmos.color = beatline.Color;
+		// Handles.DrawAAPolyLine(5, beatline.LinePoints);
+		Gizmos.DrawLine(beatline.LinePoints[0], beatline.LinePoints[1]);
 		// Gizmos.DrawCube(beatline.LinePoints[1], Vector3.one * 0.3f);
 		if (!m_EnableText) return;
 		Handles.Label(

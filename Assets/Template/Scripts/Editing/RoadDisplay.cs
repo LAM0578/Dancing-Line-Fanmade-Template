@@ -104,7 +104,7 @@ namespace DancingLineSample.Editing
 				float length = difTime / 1000f * m_LineSpeed;
 				var targetForward = (i + sameTimeCount) % 2 == 0 ? m_StartForward : m_TurnForward;
 				var nextPos = curPos + targetForward * length;
-				Lines.Add(new Line(new Point(time, curPos), nextPos));
+				Lines.Add(new Line(new Point(time - m_Offset, curPos), nextPos));
 				curPos = nextPos;
 			}
 		}
