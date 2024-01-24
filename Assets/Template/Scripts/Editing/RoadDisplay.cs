@@ -51,13 +51,14 @@ namespace DancingLineSample.Editing
 		[Serializable]
 		public class Line
 		{
-			public Line(Point from, Vector3 to)
+			public Line(Vector3 from, Vector3 to)
 			{
 				From = from;
 				To = to;
 			}
-			
-			public Point From;
+
+			public string DisplayText;
+			public Vector3 From;
 			public Vector3 To;
 		}
 
@@ -85,6 +86,8 @@ namespace DancingLineSample.Editing
 		public void CalculateLines()
 		{
 			Lines.Clear();
+			var times = new List<int>();
+			
 			int sameTimeCount = 0;
 			var curPos = m_StartPosition;
 			for (int i = 0; i < Timings.Count; i++)
@@ -104,8 +107,25 @@ namespace DancingLineSample.Editing
 				float length = difTime / 1000f * m_LineSpeed;
 				var targetForward = (i + sameTimeCount) % 2 == 0 ? m_StartForward : m_TurnForward;
 				var nextPos = curPos + targetForward * length;
-				Lines.Add(new Line(new Point(time - m_Offset, curPos), nextPos));
+				Lines.Add(new Line(curPos, nextPos));
+				times.Add(time - m_Offset);
 				curPos = nextPos;
+			}
+			
+			if (Lines.Count == 0) return;
+
+			var prevTime = 0;
+			for (int i = 0; i < Lines.Count; i++)
+			{
+				var line = Lines[i];
+				var curTime = times[i];
+				var dirTime = curTime - prevTime;
+				var sec = dirTime / 1000f * 60f;
+				var secs = (int)(sec / 60);
+				var secm = sec % 60;
+				var text = $"{curTime} ({dirTime} [{secs}:{secm}, {sec}])";
+				line.DisplayText = text;
+				prevTime = curTime;
 			}
 		}
 
@@ -202,19 +222,19 @@ namespace DancingLineSample.Editing
 			for (int i = 0; i < Lines.Count; i++)
 			{
 				var line = Lines[i];
-				Gizmos.DrawLine(line.From.Position, line.To);
+				Gizmos.DrawLine(line.From, line.To);
 				Gizmos.DrawCube(line.To, Vector3.one * m_PointRadius);
 				if (m_ShowText)
 				{
 					Handles.Label(
-						line.From.Position, 
-						line.From.Timing.ToString(), 
+						line.From, 
+						line.DisplayText, 
 						_style
 					);
 				}
 				if (i + 1 >= Lines.Count)
 				{
-					var targetForward = Lines.Count % 2 != 0 ? m_StartForward : m_TurnForward;
+					var targetForward = Lines.Count % 2 == 0 ? m_StartForward : m_TurnForward;
 					Gizmos.DrawRay(line.To, targetForward * 1000f);
 				}
 			}

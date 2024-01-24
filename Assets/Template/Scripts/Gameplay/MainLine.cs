@@ -220,6 +220,8 @@ namespace DancingLineSample.Gameplay
 			
 			transform.position = ResetPosition;
 			transform.localRotation = Quaternion.Euler(StartForward);
+			
+			_onGround = UpdateOnGroupStatus();
 		}
 
 		/// <summary>

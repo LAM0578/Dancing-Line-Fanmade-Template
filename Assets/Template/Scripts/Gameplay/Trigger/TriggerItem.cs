@@ -16,5 +16,11 @@ namespace DancingLineSample.Gameplay.Trigger
 	}
 		
 	[Serializable] public class TriggerItemVector3 : TriggerItem<Vector3> { }
+
+	[Serializable]
+	public class TriggerItemVector3WithLocal : TriggerItem<Vector3>
+	{
+		public bool IsLocal;
+	}
 	[Serializable] public class TriggerItemFloat : TriggerItem<float> { }
 }

@@ -109,3 +109,16 @@ __请注意，使用本模板需要有一定的 C# 基础，不提供 C# 基础�
 - 在 `TransformAnimation` 和 `TransformAnimationTrigger` 中增加了 `SwapValues` 方法便于快速交换值位置
 - 新增了一个 `QualitySettingEvent` 便于在设置画质时设置一些对象状态
 - 新增了 `ProBuilder` 包位于 `Packages/manifest.json` 中
+
+### 2024/1/25 - 2024012500 更新
+> 目前已知一个暂停后再继续会有时间偏差的问题可能会下次修复
+- 新增了一个未完成的 `TimelineAnimation` 为以后的更新做准备
+- 重写了 `CameraTrigger` 的旋转逻辑
+- 修复了 `CameraTrigger` 可能会在不正确的时候被意外触发的问题
+- 修复了 `AnimatorAnimation` 和 `AnimatorAnimationTrigger` 在 `Continue` 方法继续时没有判断是否被触发过而直接继续的问题
+- 修复了线 (`MainLine`) 在重置时不会自动获取是否在地面的状态而导致的不该产生的落地粒子效果产生
+- 修复了 `BeatlineDisplay` 未添加 `#if UNITY_EDITOR` 导致的打包失败问题
+- 在 `RoadDisplay` 中文字样式修改为此格式: `该点时间 (距离上个点时间 [秒:帧, 总帧])`, 其中帧默认为 60 帧为 1 秒
+- 在读取设置的时候做了个 `try-catch` 处理避免后续无法被加载
+- 整合了谱面转换路径工具 (`Chart Convert to Road / Chart Converter`)
+- 修改了部分 `EditorTools` 的位置

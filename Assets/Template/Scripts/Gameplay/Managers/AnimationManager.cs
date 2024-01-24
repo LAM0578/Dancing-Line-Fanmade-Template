@@ -68,6 +68,7 @@ namespace DancingLineSample.Gameplay
 			foreach (var anim in _animatorAnimations)
 			{
 				if (anim.Actived || curTiming < anim.TriggerTime) continue;
+				// print($"Active Animator: {anim}, TriggerTime: {anim.TriggerTime}, CurTiming: {curTiming}");
 				anim.ActiveAnimation();
 			}
 		}

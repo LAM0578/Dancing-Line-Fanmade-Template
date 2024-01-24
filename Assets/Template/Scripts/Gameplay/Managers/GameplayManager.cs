@@ -356,6 +356,7 @@ namespace DancingLineSample.Gameplay
 			{
 				MusicSource.Play();
 				MusicSource.time = _fTiming;
+				// _fTiming = MusicSource.time;
 			}
 			CameraManager.Instance.ContinueTriggers();
 			AnimationManager.Instance.Continue();

@@ -7,18 +7,15 @@ using System.Linq;
 using System.Text;
 using DancingLineSample.Gameplay;
 
-public class AFFToRoad : EditorWindow
+public class AFFToRoad
 {
-	private AutoPlayManager _autoPlayManager;
-	private GameplayManager _gameplayManager;
-	
 	private static int ReadInternal(string eventContent, int skipCount)
 	{
 		var rawDatas = eventContent.SubStringByIndex(skipCount, -1).Split(',');
 		return int.Parse(rawDatas[0]); 
 	}
 
-	private void SetTimingsFromChart(string chartData)
+	private static (int audioOffset, List<int> timings) GetDatasFromChart(string chartData)
 	{
 		int audioOffset = 0;
 		var timings = new List<int>();
@@ -70,58 +67,18 @@ public class AFFToRoad : EditorWindow
 				}
 			}
 		}
-
-		Debug.Log($"AudioOffset: {audioOffset}");
-		Debug.Log($"Timings: {string.Join(",", timings)}");
-
-		if (!_autoPlayManager)
-		{
-			_autoPlayManager = UnityUtility.FindObjectFromCurrentScene<AutoPlayManager>();
-			if (!_autoPlayManager)
-			{
-				return;
-			}
-		}
 		
-		if (!_gameplayManager)
-		{
-			_gameplayManager = UnityUtility.FindObjectFromCurrentScene<GameplayManager>();
-			if (!_gameplayManager)
-			{
-				return;
-			}
-		}
-		
-		_gameplayManager.AudioOffset = audioOffset;
-		_autoPlayManager.LoadAutoData(timings);
+		return (audioOffset, timings);
 	}
 
 	/// <summary>
 	/// 选择一个文件作为 Arcaea 谱面并解析为时间点
 	/// </summary>
-	private void ReadChart()
+	public (int audioOffset, List<int> timings) ReadChart()
 	{
 		var path = EditorUtility.OpenFilePanel("Select a Arcaea Chart File (*.aff)", "", "aff");
-		if (string.IsNullOrEmpty(path)) return;
+		if (string.IsNullOrEmpty(path)) throw new FileNotFoundException();
 		var chartData = File.ReadAllText(path);
-		SetTimingsFromChart(chartData);
-	}
-
-	[MenuItem("EditorTools/ChartConvert/Arcaea")]
-	public static void ShowWindow()
-	{
-		var window = GetWindow<AFFToRoad>();
-		window.titleContent = new GUIContent("Chart Convert - Arcaea");
-		window.Show();
-	}
-
-	private void OnGUI()
-	{
-		GUILayout.BeginHorizontal();
-		if (GUILayout.Button("Open Chart"))
-		{
-			ReadChart();
-		}
-		GUILayout.EndHorizontal();
+		return GetDatasFromChart(chartData);
 	}
 }

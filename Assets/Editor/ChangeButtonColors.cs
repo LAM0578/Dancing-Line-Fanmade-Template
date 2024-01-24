@@ -35,7 +35,7 @@ public class ChangeButtonColors : ScriptableWizard
         }
     }
 
-    [MenuItem("EditorTools/ChangeButtonColors")]
+    [MenuItem("EditorTools/UGUI/Change Button Colors")]
     private static void CreateWizard()
     {
         var window = DisplayWizard<ChangeButtonColors>(

@@ -12,7 +12,7 @@ namespace DancingLineSample.Gameplay.Trigger
 	public class CameraTrigger : MonoBehaviour
 	{
 		public TriggerItemVector3 Move = new TriggerItemVector3();
-		public TriggerItemVector3 Rotate = new TriggerItemVector3();
+		public TriggerItemVector3WithLocal Rotate = new TriggerItemVector3WithLocal();
 		[Space] 
 		public TriggerItemFloat FieldOfView = new TriggerItemFloat();
 		[Space] 
@@ -20,13 +20,31 @@ namespace DancingLineSample.Gameplay.Trigger
 
 		private bool _isActived;
 		private Tween _moveTween, _rotateTween, _fovTween;
+
+		private Tween RotateCamera(Transform trans, Vector3 endValue, float duration, bool isAdded, bool isLocal)
+		{
+			var startValue = isLocal ? trans.localEulerAngles : trans.eulerAngles;
+			var realEndValue = isAdded ? endValue + startValue : endValue;
+			return DOTween.To(
+				() => 0f,
+				x =>
+				{
+					var rot = Vector3.Lerp(startValue, realEndValue, x);
+					if (isLocal) trans.localEulerAngles = rot;
+					else trans.eulerAngles = rot;
+				},
+				1,
+				duration
+			);
+		}
 		
 		[MethodButton("Active")]
 		private void Active()
 		{
-			if (_isActived && !IsRecyclable || 
-			    GameplayManager.Instance.LineStatus != PlayerStatus.Playing) return;
+			if (_isActived && !IsRecyclable) return;
 			_isActived = true;
+			
+			if (GameplayManager.Instance.LineStatus != PlayerStatus.Playing) return;
 			
 			if (Move.Enable)
 			{
@@ -43,10 +61,13 @@ namespace DancingLineSample.Gameplay.Trigger
 			if (Rotate.Enable)
 			{
 				var camTransform = CameraManager.Instance.TargetCamera.transform;
-				_rotateTween = Rotate.IsAdded ? 
-					camTransform.DOBlendableLocalRotateBy(Rotate.Value, Rotate.Duration) : 
-					camTransform.DOLocalRotate(Rotate.Value, Rotate.Duration).
-						SetEase(Rotate.Easing);
+				_rotateTween = RotateCamera(
+					camTransform, 
+					Rotate.Value, 
+					Rotate.Duration, 
+					Rotate.IsAdded, 
+					Rotate.IsLocal)
+				.SetEase(Rotate.Easing);
 			}
 
 			if (FieldOfView.Enable)

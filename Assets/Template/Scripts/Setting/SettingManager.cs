@@ -122,8 +122,16 @@ namespace DancingLineSample.Setting
 		
 		private void LoadSettings()
 		{
-			_settings = MsgPackHelper
-				.TryReadAndDeserializeFromFile(_settingDataPath, m_DefaultSettings);
+			try
+			{
+				_settings = MsgPackHelper
+					.TryReadAndDeserializeFromFile(_settingDataPath, m_DefaultSettings);
+			}
+			catch (Exception e)
+			{
+				_settings = m_DefaultSettings;
+				Debug.LogException(e);
+			}
 		}
 
 		private void Start()
@@ -163,6 +171,7 @@ namespace DancingLineSample.Setting
 		
 		public void AddSetQualityListener(UnityAction<int> listener) => m_OnQualitySet.AddListener(listener);
 		public void RemoveSetQualityListener(UnityAction<int> listener) => m_OnQualitySet.RemoveListener(listener);
+		public void InvokeSetQualityListener() => m_OnQualitySet?.Invoke(_settings.QualityLevel);
 
 		#endregion
 

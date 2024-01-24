@@ -67,7 +67,7 @@ namespace DancingLineSample.Gameplay.Trigger
 		public bool OverrideCameraResetStatus => m_OverrideCameraResetStatus;
 		public CameraResetStatus CameraResetStatus => m_CameraResetStatus;
 		public CheckpointObject CheckpointObject => m_CheckpointObject;
-		public ResetObjects ResetObjects => m_ResetObjects;
+		public ResetObjects ResetObjects { get => m_ResetObjects; set => m_ResetObjects = value; }
 
 		private bool _isActived;
 		private bool _isLost;
@@ -151,6 +151,7 @@ namespace DancingLineSample.Gameplay.Trigger
 	public class CheckPointTriggerEditor : Editor
 	{
 		private CameraManager _camManager;
+		private DataManager _dataManager;
 		
 		public override void OnInspectorGUI()
 		{
@@ -167,11 +168,26 @@ namespace DancingLineSample.Gameplay.Trigger
 			{
 				if (!_camManager)
 				{
-					var camFollows = Resources.FindObjectsOfTypeAll<CameraManager>();
-					if (camFollows.Length < 1) return;
-					_camManager = camFollows[0];
+					var camManager = UnityUtility.FindObjectFromCurrentScene<CameraManager>();
+					if (!camManager) return;
+					_camManager = camManager;
 				}
 				item.SetCameraResetStatus(_camManager.CameraResetStatus);
+			}
+
+			if (GUILayout.Button("Copy reset object data from DataManager"))
+			{
+				if (!_dataManager)
+				{
+					var dataManager = UnityUtility.FindObjectFromCurrentScene<DataManager>();
+					if (!dataManager) return;
+					_dataManager = dataManager;
+				}
+				
+				var levelData = _dataManager.SingleLevel ? _dataManager.Level : _dataManager.Levels[0];
+				var resetObjs = levelData.ResetObjects;
+				
+				item.ResetObjects = resetObjs;
 			}
 		}
 	}

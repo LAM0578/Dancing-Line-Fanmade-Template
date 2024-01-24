@@ -70,6 +70,7 @@ namespace DancingLineSample.Gameplay.Animation
 		
 		public override void Continue()
 		{
+			if (!Actived) return;
 			_animator.speed = 1;
 		}
 

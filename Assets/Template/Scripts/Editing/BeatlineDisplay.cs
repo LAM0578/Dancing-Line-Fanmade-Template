@@ -40,7 +40,8 @@ public class BeatlineDisplay : MonoBehaviour
 	};
 	
 #pragma warning restore
-
+	
+#if UNITY_EDITOR
 	private struct BeatlineData
 	{
 		public BeatlineData(int timing, int importance)
@@ -74,6 +75,7 @@ public class BeatlineDisplay : MonoBehaviour
 
 	private readonly List<BeatlineData> _beatlines = new List<BeatlineData>();
 	private GUIStyle _textStyle;
+	private bool _enableText;
 
 	/// <summary>
 	/// 计算小节线时间点并计算需要渲染的小节线的详细数据
@@ -180,15 +182,19 @@ public class BeatlineDisplay : MonoBehaviour
 
 	private void OnDrawGizmosUpdate()
 	{
-		if (_textStyle != null) return;
-		_textStyle = new GUIStyle
+		if (_textStyle != null && _enableText == m_EnableText) return;
+		_enableText = m_EnableText;
+		if (_enableText)
 		{
-			normal = new GUIStyleState
+			_textStyle = new GUIStyle
 			{
-				textColor = Color.white,
-				background = Color.black.WithAlpha(200).ToTexture2D()
-			}
-		};
+				normal = new GUIStyleState
+				{
+					textColor = Color.white,
+					background = Color.black.WithAlpha(200).ToTexture2D()
+				}
+			};
+		}
 	}
 
 	private void OnDrawGizmos()
@@ -200,4 +206,5 @@ public class BeatlineDisplay : MonoBehaviour
 			RenderBeatline(beatline);
 		}
 	}
+#endif
 }
